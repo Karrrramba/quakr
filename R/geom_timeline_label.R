@@ -5,6 +5,7 @@ GeomTimelineLabel <- ggproto("GeomTimelineLabel", Geom,
                         required_aes = c("x", "label"),
                         default_aes = aes(n_max = "all",
                                           filter = NULL,
+                                          filter_desc = TRUE,
                                           line_color = "grey",
                                           text_color = "black",
                                           check_overlap = TRUE,
@@ -28,7 +29,11 @@ GeomTimelineLabel <- ggproto("GeomTimelineLabel", Geom,
 
                           if (is.numeric(nmax)) {
                             data$n_max <- as.integer(data$n_max)
-                            data <- data[order(data$filter, decreasing = TRUE), ]
+                            if (first_row$filter_desc == TRUE) {
+                              data <- data[order(data$filter, decreasing = TRUE), ]
+                            } else {
+                              data <- data[order(data$filter), ]
+                            }
                             data <- data[1:nmax, ]
                           } else if(nmax != "all") {
                             cli::cli_abort("{.arg n_max} must be numeric or 'all'")
@@ -89,6 +94,7 @@ geom_timeline_label <- function(mapping = NULL,
                           inherit.aes = TRUE,
                           n_max = "all",
                           filter = NULL,
+                          filter_desc = TRUE,
                           alt_labels = FALSE,
                           check_overlap = FALSE,
                           ...)
@@ -110,7 +116,7 @@ eq_clean %>%
   filter(Country == "CHINA" & lubridate::year(Date) >= 1990) %>%
   ggplot(aes(x = lubridate::year(Date), color = Mag))+
   geom_timeline(aes(xmin = min(lubridate::year(Date)), xmax = max(lubridate::year(Date)), size = Deaths)) +
-  geom_timeline_label(aes(label = Location, n_max = 5, filter = Mag))
+  geom_timeline_label(aes(label = Location, n_max = 5, filter = Mag, filter_desc = FALSE))
 
 
 eq_clean %>%

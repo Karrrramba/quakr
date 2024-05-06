@@ -17,16 +17,15 @@ GeomTimelineLabel <- ggproto("GeomTimelineLabel", Geom,
                           first_row <- data[1, ]
                           nmax <- first_row[ , "n_max"]
 
-                          if (first_row$group >= 1) {
-                            data$y <- data$group
-                            data$yend <- data$y + 0.1
-                          } else {
+                          if (is.null(first_row$y)) {
                             data$y <- 0.5
                             data$yend <- 0.55
+                          } else {
+                            data$yend <-  data$y + 0.1
                           }
 
                           if (first_row$alt_labels == TRUE) {
-                            data$yend[seq(1, nrow(data), 2)] <-  data$y[seq(1, nrow(data), 2)] - 0.2
+                            data$yend[seq(1, nrow(data), 2)] <-  data$y[seq(1, nrow(data), 2)] - 0.1
                           }
 
                           if (is.numeric(nmax)) {
@@ -55,8 +54,6 @@ GeomTimelineLabel <- ggproto("GeomTimelineLabel", Geom,
                           } else {
                             coords$hjust = 0
                           }
-
-                          print(coords)
 
                           text_grob <- grid::textGrob(
                             label = coords$label,
@@ -96,8 +93,8 @@ geom_timeline_label <- function(mapping = NULL,
 
 eq_clean %>%
   filter(Country == "CHINA" & lubridate::year(Date) >= 1990) %>%
-  ggplot(aes(x = lubridate::year(Date), color = Mag, size = Deaths))+
-  geom_timeline(aes(xmin = min(lubridate::year(Date)), xmax = max(lubridate::year(Date)))) +
+  ggplot(aes(x = lubridate::year(Date), color = Mag))+
+  geom_timeline(aes(xmin = min(lubridate::year(Date)), xmax = max(lubridate::year(Date)), size = Deaths)) +
   geom_timeline_label(aes(label = Location, mag = Mag, n_max = "all"))
 
 

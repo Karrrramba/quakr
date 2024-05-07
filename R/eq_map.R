@@ -1,11 +1,16 @@
 library(leaflet)
-
+library(tidyverse)
+library(rlang)
 eq_map <- function(data, annot_col) {
 
   p <- leaflet::leaflet() %>%
     leaflet::addTiles() %>%
     leaflet::addCircles(data = data,
-               popup = ~ str2lang(annot_col),
+               # popup = ~ paste("<b> Date: </b>", annot_col),
+               # popup = ~ !!annot_col,
+               # popup = ~ as.character(.data[[annot_col]]),
+               # popup = ~ paste0("<b>", .data[[annot_col]], "</b>"),
+               label = paste("Date:", data[[annot_col]]),
                lng =  ~ LONGITUDE,
                lat = ~ LATITUDE,
                radius = ~ MAG * 5000,

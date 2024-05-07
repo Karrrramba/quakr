@@ -14,7 +14,11 @@
 #' @importFrom leaflet leaflet addProviderTiles addCircles
 #'
 #' @examples
-#' # example code
+#' m <- as.data.frame(
+#' "COUNTRY" = "MEXICO",
+#' "LOCATION" = c(
+#')
+#' )
 #'
 #' @export
 
@@ -36,4 +40,6 @@ eq_map <- function(data, annot_col) {
 
 eq_clean %>%
   filter(COUNTRY == "MEXICO" & lubridate::year(DATE) > 2000) %>%
+  slice(1:5)
+
   eq_map(annot_col = "DATE")

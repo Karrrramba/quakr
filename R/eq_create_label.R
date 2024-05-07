@@ -1,3 +1,16 @@
+#' Create Event Labels
+#'
+#' @description
+#' Dynamically creates labels
+#'
+#' @param data description
+#'
+#' @examples
+#' # example code
+#'
+#'
+#' @export
+
 eq_create_label <- function(data) {
 
   df <- paste(
@@ -18,12 +31,8 @@ eq_clean %>%
   eq_map(annot_col = "popup_text")
   mutate(popup_text = eq_create_label(.)) %>%
    mutate(popup_text = paste(
-    ifelse(!is.na(LOCATION), '"<b>Location:</b>"', ""),
-    ifelse(!is.na(LOCATION), paste(LOCATION, as.character('"<br />"')), ""),
-    ifelse(!is.na(MAG), paste("<b>Magnitude:</b>"), ""),
-    ifelse(!is.na(MAG), paste("<b>Magnitude:</b>", MAG, "<br />"), ""),
-    ifelse(!is.na(TOTAL_DEATHS), paste("<b>Total deaths:</b>", TOTAL_DEATHS, "<br />"), ""),
-    ifelse(!is.na(TOTAL_DEATHS), paste("<b>Total deaths:</b>", TOTAL_DEATHS, "<br />"), ""),
-           collapse = ""
+     ifelse(!is.na(LOCATION), paste("<b>Location:</b>", LOCATION, "<br />"), ""),
+     ifelse(!is.na(MAG), paste("<b>Magnitude:</b>", MAG, "<br />"), ""),
+     ifelse(!is.na(TOTAL_DEATHS), paste("<b>Total deaths:</b>", OTAL_DEATHS, "<br />"), "")
   )) %>%
   select(LOCATION, popup_text)

@@ -1,16 +1,29 @@
-library(leaflet)
-library(tidyverse)
-library(rlang)
+#' Draw a Map with Earthquake Locations
+#'
+#' @description
+#' \code{eq_map} plots the locations of earthquake events on a geographical map
+#'   of a given country.
+#'
+#' @param data A data frame containing columns for "country",
+#'   "magnitude", "longitude" and "latitude".
+#'
+#' @param annot_col A vector of values which will be used for labels.
+#'
+#' @retrurns An interactive leaflet map
+#'
+#' @importFrom leaflet leaflet addProviderTiles addCircles
+#'
+#' @examples
+#' # example code
+#'
+#' @export
+
 eq_map <- function(data, annot_col) {
 
   p <- leaflet::leaflet() %>%
-    leaflet::addTiles() %>%
+    lealet::addProviderTiles("Esri.WorldTopoMap") %>%
     leaflet::addCircles(data = data,
-               # popup = ~ paste("<b> Date: </b>", annot_col),
-               # popup = ~ !!annot_col,
-               # popup = ~ as.character(.data[[annot_col]]),
-               # popup = ~ paste0("<b>", .data[[annot_col]], "</b>"),
-               label = paste("Date:", data[[annot_col]]),
+               popup =  = ~data[[annot_col]],
                lng =  ~ LONGITUDE,
                lat = ~ LATITUDE,
                radius = ~ MAG * 5000,

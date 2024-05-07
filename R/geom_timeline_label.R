@@ -1,7 +1,7 @@
 library(tidyverse)
 library(grid)
 
-GeomTimelineLabel <- ggproto("GeomTimelineLabel", Geom,
+GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                         required_aes = c("x", "label"),
                         default_aes = aes(n_max = "all",
                                           filter = NULL,
@@ -56,7 +56,7 @@ GeomTimelineLabel <- ggproto("GeomTimelineLabel", Geom,
                           # draw line
                           line_grobs <- lapply(seq_len(nrow(coords)), function(i) {
                             grid::linesGrob(x = unit(coords$x[i], "npc"),
-                                      y = unit(c(coords$y[i], coords$yend[i]), "npc"),
+                                      y = grid::unit(c(coords$y[i], coords$yend[i]), "npc"),
                                       gp = grid::gpar(col = coords$line_colour[i])
                             )
                           })
@@ -72,16 +72,16 @@ GeomTimelineLabel <- ggproto("GeomTimelineLabel", Geom,
 
                           text_grob <- grid::textGrob(
                             label = coords$label,
-                            x = unit(coords$x, "npc"),
-                            y = unit(coords$yend, "npc"),
+                            x = grid::unit(coords$x, "npc"),
+                            y = grid::unit(coords$yend, "npc"),
                             rot = 15,
                             hjust = coords$hjust,
                             vjust = 0,
                             gp = grid::gpar(size = 1),
-                            check.overlap = data$check_overlap
+                            check.overlap = first_row$check_overlap
                           )
 
-                          grobTree(lines_tree, text_grob)
+                          grid::grobTree(lines_tree, text_grob)
                         }
 )
 
@@ -112,16 +112,17 @@ geom_timeline_label <- function(mapping = NULL,
     )
 }
 
+
 eq_clean %>%
-  filter(Country == "CHINA" & lubridate::year(Date) >= 1990) %>%
-  ggplot(aes(x = lubridate::year(Date), color = Mag))+
-  geom_timeline(aes(xmin = min(lubridate::year(Date)), xmax = max(lubridate::year(Date)), size = Deaths)) +
-  geom_timeline_label(aes(label = Location, n_max = 5, filter = Mag, filter_desc = FALSE))
+  filter(COUNTRY == "CHINA" & lubridate::year(DATE) >= 1990) %>%
+  ggplot(aes(x = lubridate::year(DATE)))+
+  geom_timeline(aes(xmin = min(lubridate::year(DATE)), xmax = max(lubridate::year(Date)))) +
+  geom_timeline_label(aes(label = LOCATION, n_max = 5, filter = MAG, filter_desc = FALSE))
 
 
 eq_clean %>%
-  filter(Country %in%  c("MEXICO", "JAPAN", "CHINA") & lubridate::year(Date) >= 1990) %>%
-  ggplot(aes(x = lubridate::year(Date), y = Country)) +
-  geom_timeline(aes(xmin = min(lubridate::year(Date)), xmax = max(lubridate::year(Date)))) +
-  geom_timeline_label(aes(label = Location, n_max = "all", alt_labels = TRUE, check_overlap = TRUE))
+  filter(COUNTRY %in%  c("MEXICO", "JAPAN", "CHINA") & lubridate::year(DATE) >= 1990) %>%
+  ggplot(aes(x = lubridate::year(DATE), y = Country)) +
+  geom_timeline(aes(xmin = min(lubridate::year(DATE)), xmax = max(lubridate::year(DATE)), size = DEATHS)) +
+  geom_timeline_label(aes(label = LOCATION, n_max = "all", alt_labels = TRUE, check_overlap = TRUE))
 

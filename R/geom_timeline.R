@@ -1,10 +1,9 @@
-GeomTimeline <- ggproto("GeomTimeline", Geom,
+GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
                            required_aes = c("x", "xmin", "xmax"),
-                           default_aes = aes(shape = 19,
-                                             colour = "lightblue",
-                                             size = 1.5,
-                                             alpha = 0.5,
-                                             line_color = "grey"),
+                           default_aes = aes(line_color = "grey",
+                                             linewidth =  0.5,
+                                             point_color = "lightblue",
+                                             alpha = 1),
 
                            draw_key = draw_key_point,
 
@@ -19,38 +18,42 @@ GeomTimeline <- ggproto("GeomTimeline", Geom,
                              }
 
                              coords <- coord$transform(data, panel_params)
-                             # print(head(coords))
+                             print(head(coords))
                              # print(head(data))
 
                              hline_grob <- grid::segmentsGrob(
-                               x0 = unit(coords$xmin, "npc"),
-                               y0 = unit(coords$y, "npc"),
-                               x1 = unit(coords$xmax, "npc"),
-                               y1 = unit(coords$y, "npc"),
-                               gp = grid::gpar(col = coords$line_color)
+                               x0 = grid::unit(coords$xmin, "npc"),
+                               y0 = grid::unit(coords$y, "npc"),
+                               x1 = grid::unit(coords$xmax, "npc"),
+                               y1 = grid::unit(coords$y, "npc"),
+                               gp = grid::gpar(col = first_row$line_color,
+                                               lwd = first_row$linewidth * .pt,
+                                               lty = 1)
                              )
 
                              # draw points
                              points_grob <- grid::pointsGrob(
                                coords$x,
                                coords$y,
-                               pch = coords$shape,
-                               gp = grid::gpar(col = alpha(coords$colour, alpha = coords$alpha),
-                                               size = coords$size)
+                               pch = 19,
+                               gp = grid::gpar(col = first_row$point_colour,
+                                               alpha = first_row$alpha,
+                                               size = 1)
                              )
-                             ggplot2:::ggname("geom_comp",
-                                              grobTree(hline_grob,
-                                                       points_grob))
+
+                             grid::grobTree(hline_grob,points_grob)
                            }
 )
 
+
 geom_timeline <- function(mapping = NULL,
-                              data = NULL,
-                              stat = "identity",
-                              position = "identity",
-                              na.rm = FALSE,
-                              show.legend = NA,
-                              inherit.aes = TRUE, ...) {
+                          data = NULL,
+                          stat = "identity",
+                          position = "identity",
+                          na.rm = FALSE,
+                          show.legend = NA,
+                          inherit.aes = TRUE,
+                          ...) {
   ggplot2::layer(
     geom = GeomTimeline,
     mapping = mapping,
@@ -60,6 +63,12 @@ geom_timeline <- function(mapping = NULL,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(na.rm = na.rm,
+                  point_color = point_color,
                   ...)
   )
 }
+
+eq_clean %>%
+  filter(COUNTRY == "CHINA" & lubridate::year(DATE) >= 1990) %>%
+  ggplot(aes(x = lubridate::year(DATE)))+
+  geom_timeline(aes(xmin = min(lubridate::year(DATE)), xmax = max(lubridate::year(DATE)), point_color = "red"))

@@ -14,3 +14,11 @@ Suggests:
 Config/testthat/edition: 3
 URL: https://github.com/Karrrramba/quakr
 BugReports: https://github.com/Karrrramba/quakr/issues
+Imports: 
+    dplyr,
+    ggplot2,
+    grid,
+    janitor,
+    leaflet,
+    lubridate,
+    readr

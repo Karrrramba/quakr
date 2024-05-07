@@ -4,10 +4,10 @@ eq_df <- readr::read_tsv("data/earthquakes-2024-04-29_16-19-32_+0200.tsv",
 eq_clean_data <- function(df) {
   df <- df %>%
     janitor::clean_names(.) %>%
-    dplyr::rename_with(stringr::str_to_upper()) %>%
+    dplyr::rename_with(stringr::str_to_upper) %>%
     dplyr::filter(!is.na(LOCATION_NAME)) %>%
     dplyr::mutate(
-      Date = lubridate::make_date(YEAR, MO, DY),
+      DATE = lubridate::make_date(YEAR, MO, DY),
       COUNTRY = as.factor(stringr::str_extract(LOCATION_NAME, "(^[a-zA-Z]+)")),
       LOCATION = stringr::str_remove(LOCATION_NAME, "(^[a-zA-Z]+)\\W+"),
       LOCATION = stringr::str_to_title(LOCATION)
@@ -26,9 +26,7 @@ eq_location_clean <- function(df){
            Location = stringr::str_to_title(Location))
 
   df
-
 }
-
 
 eq_clean <-  eq_clean_data(eq_df)
 

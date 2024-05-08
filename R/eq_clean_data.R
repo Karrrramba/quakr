@@ -10,23 +10,21 @@
 #' @importFrom dplyr filter mutate relocate rename_with select
 #' @importFrom janitor clean_names
 #' @importFrom lubridate make_date
-#' @importFrom stringr str_to_upper
 #'
 #' @examples
 #' # example code
 #'
 #'
 #' @export
-
 eq_clean_data <- function(data) {
   data <- data %>%
     janitor::clean_names(.) %>%
-    dplyr::rename_with(stringr::str_to_upper) %>%
+    dplyr::rename_with(toupper) %>%
     dplyr::filter(!is.na(LOCATION_NAME)) %>%
     eq_location_clean(.) %>%
     dplyr::mutate(DATE = lubridate::make_date(YEAR, MO, DY)) %>%
     dplyr::relocate(DATE, .before = HR) %>%
-    dplyr::relocate(c(COUNTRY, LOCATION), .before = LOCATION_NAME) %>%
+    dplyr::relocate(c(COUNTRY, LOCATION), .before = LATITUDE) %>%
     dplyr::select(!c(YEAR, MO, DY))
 
   data

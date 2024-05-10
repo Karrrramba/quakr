@@ -1,5 +1,34 @@
-library(tidyverse)
-library(grid)
+#' @rdname geom_timeline
+#' @format NULL
+#' @usage NULL
+#' @export
+geom_timeline_label <- function(mapping = NULL,
+                          data = NULL,
+                          stat = "identity",
+                          position = "identity",
+                          na.rm = FALSE,
+                          show.legend = NA,
+                          inherit.aes = TRUE,
+                          n_max = "all",
+                          filter = NULL,
+                          filter_desc = TRUE,
+                          alt_labels = FALSE,
+                          check_overlap = FALSE,
+                          ...)
+  {
+    ggplot2::layer(
+      geom = GeomTimelineLabel,
+      mapping = mapping,
+      data = data,
+      stat = stat,
+      position = position,
+      show.legend = show.legend,
+      inherit.aes = inherit.aes,
+      params = list(na.rm = na.rm,
+                    ...)
+    )
+}
+
 
 GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                         required_aes = c("x", "label"),
@@ -81,36 +110,10 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                             check.overlap = first_row$check_overlap
                           )
 
-                          grid::grobTree(lines_tree, text_grob)
+                          # grid::grobTree(lines_tree, text_grob)
+                          grid::gList(lines_tree, text_grob)
                         }
 )
-
-geom_timeline_label <- function(mapping = NULL,
-                          data = NULL,
-                          stat = "identity",
-                          position = "identity",
-                          na.rm = FALSE,
-                          show.legend = NA,
-                          inherit.aes = TRUE,
-                          n_max = "all",
-                          filter = NULL,
-                          filter_desc = TRUE,
-                          alt_labels = FALSE,
-                          check_overlap = FALSE,
-                          ...)
-  {
-    ggplot2::layer(
-      geom = GeomTimelineLabel,
-      mapping = mapping,
-      data = data,
-      stat = stat,
-      position = position,
-      show.legend = show.legend,
-      inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm,
-                    ...)
-    )
-}
 
 
 eq_clean %>%

@@ -24,10 +24,10 @@
 
 eq_map <- function(data, annot_col) {
 
-  p <- leaflet::leaflet() %>%
-    lealet::addProviderTiles("Esri.WorldTopoMap") %>%
+  leaflet::leaflet() %>%
+    leaflet::addProviderTiles("Esri.WorldTopoMap") %>%
     leaflet::addCircles(data = data,
-               popup =  = ~data[[annot_col]],
+               popup = ~ data[[annot_col]],
                lng =  ~ LONGITUDE,
                lat = ~ LATITUDE,
                radius = ~ MAG * 5000,
@@ -35,11 +35,11 @@ eq_map <- function(data, annot_col) {
                fillOpacity = 0.4,
                weight = 1,
                )
-  p
+
 }
 
 eq_clean %>%
   filter(COUNTRY == "MEXICO" & lubridate::year(DATE) > 2000) %>%
+  eq_map(annot_col = "DATE")
   slice(1:5)
 
-  eq_map(annot_col = "DATE")

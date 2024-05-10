@@ -2,14 +2,15 @@
 #'
 #' @description
 #' \code{eq_map} plots the locations of earthquake events on a geographical map
-#'   of a given country.
+#'   of given countries (see examples below). Locations are plotted as
+#'   red circles with labels.
 #'
 #' @param data A data frame containing columns for "country",
-#'   "magnitude", "longitude" and "latitude".
+#'   "magnitude", "longitude" and "latitude". The latter two must be values in [deg].
 #'
 #' @param annot_col A vector of values which will be used for labels.
 #'
-#' @retrurns An interactive leaflet map
+#' @retrurns An interactive leaflet map.
 #'
 #' @importFrom leaflet leaflet addProviderTiles addCircles
 #'

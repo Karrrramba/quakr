@@ -1,21 +1,48 @@
 #' Timeline
 #'
-#'This geom plot a vertical timeline with overlaid
+#' This function creates a timeline geom for ggplot2, which can be used to visualize
+#' events or intervals over a continuous time axis.
 #'
-#' @section Aestethics:
-#' This geom supports the same aesthetics as `geom_point` plus
-#' the following line aesthetics:
-#' `linewidth`
-#' `linetype`
-#' `linecolour`
+#' @section Aesthetics: `geom_pointpath()` understands the following
+#'   aesthetics (required aesthetics are in bold):
+#'   \itemize{\item{**`x`**} \item{**`xmin`**} \item{**`xmax`**}
+#'   \item{`y`} \item{`linewidth`} \item{`linetype`} \item{`linecolour`}}
+#'   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
+#'   \item{`stroke`}
 #'
-#' @inheritParams ggplot2::geom_point
-#' @param name description
+#' @return A layer \code{ggproto} object.
+#'
+#' @importFrom ggplot2 aes alpha fill_alpha ggproto layer
+#' @importFrom grid gpar gList pointsGrob segmentsGrob unit
+#'
 #' @export
-#' @param x description
-#' @examples
-#' # example code
 #'
+#' @examples
+#' data(mexico)
+#' mexico %>%
+#'  eq_clean_data() %>%
+#'  filter(lubridate::year(DATE) >= 1990) %>%
+#'  ggplot() +
+#'  geom_timeline(aes(
+#'   x = DATE,
+#'   xmin = min(DATE),
+#'   xmax = max(DATE)
+#'   )
+#'  )
+#'
+#' data(southamerica)
+#' southamerica %>%
+#'  eq_clean_data() %>%
+#'  filter(lubridate::year(DATE) >= 1990) %>%
+#'  ggplot() +
+#'  geom_timeline(aes(
+#'   x = DATE,
+#'   y = COUNTRY,
+#'   xmin = min(DATE),
+#'   xmax = max(DATE)
+#'   )
+#'  )
+#' @import ggplot2
 
 geom_timeline <- function(mapping = NULL,
                           data = NULL,
@@ -49,32 +76,33 @@ geom_timeline <- function(mapping = NULL,
 #' @export
 GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
                                  required_aes = c("x", "xmin", "xmax"),
-                                 default_aes = aes(
-                                   lty = 1,
-                                   lwd = 0.5,
+                                 default_aes = ggplot2::aes(
+                                   y = NA,
+                                   linetype = 1,
+                                   linewidth = 0.5,
                                    linecolour = "black",
                                    colour = "black",
-                                   size = 1,
+                                   size = 1.75,
                                    alpha = 0.25,
                                    shape = 19,
                                    fill = NA
                                  ),
+
+                                 non_missing_aes = c("size", "shape", "colour",
+                                                     "linetype", "linewidth",
+                                                     "linecolour"),
 
                                  draw_key = draw_key_point,
 
                                  draw_group = function(data, panel_params, coord, ...) {
 
                                    first_row <- data[1, ]
-                                   print(str(first_row))
-
-                                   if (first_row$group >= 1) {
-                                     data$y <- data$group
-                                   } else {
-                                     data$y <- 0.5
-                                   }
 
                                    coords <- coord$transform(data, panel_params)
-                                   print(head(coords))
+
+                                   if(is.na(first_row$y)) {
+                                     coords$y = 0.5
+                                   }
 
                                    hline_grob <- grid::segmentsGrob(
                                      x0 = grid::unit(coords$xmin, "npc"),
@@ -92,7 +120,7 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
                                      coords$x,
                                      coords$y,
                                      pch = coords$shape,
-                                     size = unit(coords$size, "char"),
+                                     size = grid::unit(coords$size, "char"),
                                      gp = grid::gpar(
                                        col = ggplot2::alpha(coords$colour, coords$alpha),
                                        fill = ggplot2::fill_alpha(coords$fill, coords$alpha)
@@ -102,9 +130,3 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
                                    grid::gList(hline_grob, points_grob)
                                  }
 )
-
-
-eq_clean %>%
-  filter(COUNTRY == "CHINA" & lubridate::year(DATE) >= 1990 & !is.na(DATE)) %>%
-  ggplot(aes(x = DATE)) +
-  geom_timeline(aes(xmin = min(DATE), xmax = max(DATE), size = MAG, colour = TOTAL_DEATHS), lty = "dashed", lwd = 2)

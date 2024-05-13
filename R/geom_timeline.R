@@ -4,10 +4,10 @@
 #'
 #' @section Aestethics:
 #' This geom supports the same aesthetics as `geom_point` plus
-#' the following aesthetics for the horizontal line:
-#' `line_color`
+#' the following line aesthetics:
 #' `linewidth`
 #' `linetype`
+#' `linecolour`
 #'
 #' @inheritParams ggplot2::geom_point
 #' @param name description
@@ -52,9 +52,12 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
                                  default_aes = aes(
                                    lty = 1,
                                    lwd = 0.5,
-                                   colour = "grey30",
+                                   linecolour = "black",
+                                   colour = "black",
                                    size = 1,
-                                   alpha = 0.25
+                                   alpha = 0.25,
+                                   shape = 19,
+                                   fill = NA
                                  ),
 
                                  draw_key = draw_key_point,
@@ -62,7 +65,7 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
                                  draw_group = function(data, panel_params, coord, ...) {
 
                                    first_row <- data[1, ]
-                                   print(first_row)
+                                   print(str(first_row))
 
                                    if (first_row$group >= 1) {
                                      data$y <- data$group
@@ -71,7 +74,7 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
                                    }
 
                                    coords <- coord$transform(data, panel_params)
-                                   print(coords)
+                                   print(head(coords))
 
                                    hline_grob <- grid::segmentsGrob(
                                      x0 = grid::unit(coords$xmin, "npc"),
@@ -80,18 +83,19 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
                                      y1 = grid::unit(coords$y, "npc"),
                                      gp = grid::gpar(
                                        lwd = first_row$linewidth,
-                                       lty = first_row$linetype
+                                       lty = first_row$linetype,
+                                       col = first_row$line_colour
                                      )
                                    )
 
                                    points_grob <- grid::pointsGrob(
                                      coords$x,
                                      coords$y,
-                                     pch = 19,
+                                     pch = coords$shape,
+                                     size = unit(coords$size, "char"),
                                      gp = grid::gpar(
-                                       col = coords$colour,
-                                       alpha = coords$alpha,
-                                       pointsize = coords$size
+                                       col = ggplot2::alpha(coords$colour, coords$alpha),
+                                       fill = ggplot2::fill_alpha(coords$fill, coords$alpha)
                                      )
                                    )
 
@@ -99,53 +103,8 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
                                  }
 )
 
-str(eq_clean)
+
 eq_clean %>%
-  filter(COUNTRY == "CHINA" & lubridate::year(DATE) >= 1990) %>%
-  ggplot(aes(x = lubridate::year(DATE))) +
-  geom_timeline(aes(xmin = min(lubridate::year(DATE)), xmax = max(lubridate::year(DATE)), size = MAG, colour = TOTAL_DEATHS), lty = "dashed", lwd = 2)
-
-GeomTimeline <- ggplot2::ggproto("GeomTimeline", ggplot2::GeomPoint,
-                                 required_aes = c("x", "xmin", "xmax"),
-                                 default_aes = ggplot2::aes(
-                                   lty = 1,
-                                   lwd = 0.5,
-                                   colour = "grey30",
-                                   size = 1,
-                                   alpha = 0.25
-                                 ),
-
-                                 draw_key = ggplot2::draw_key_point,
-
-                                 draw_group = function(data, panel_params, coord) {
-
-                                   first_row <- data[1, ]
-
-                                   if (first_row$group >= 1) {
-                                     data$y <- data$group
-                                   } else {
-                                     data$y <- 0.5
-                                   }
-
-                                   coords <- coord$transform(data, panel_params)
-
-                                   hline_grob <- grid::segmentsGrob(
-                                     x0 = grid::unit(coords$xmin, "npc"),
-                                     y0 = grid::unit(coords$y, "npc"),
-                                     x1 = grid::unit(coords$xmax, "npc"),
-                                     y1 = grid::unit(coords$y, "npc"),
-                                     gp = grid::gpar(
-                                       col = first_row$colour,
-                                       lwd = first_row$lwd,
-                                       lty = first_row$lty
-                                     )
-                                   )
-
-                                   points_grob <- ggplot2:::ggproto_parent(ggplot2::geom_point)$draw_group(
-                                     data, panel_params, coord
-                                   )
-
-                                   grid::gList(hline_grob, points_grob)
-                                 }
-)
-
+  filter(COUNTRY == "CHINA" & lubridate::year(DATE) >= 1990 & !is.na(DATE)) %>%
+  ggplot(aes(x = DATE)) +
+  geom_timeline(aes(xmin = min(DATE), xmax = max(DATE), size = MAG, colour = TOTAL_DEATHS), lty = "dashed", lwd = 2)

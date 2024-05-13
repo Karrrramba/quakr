@@ -1,7 +1,38 @@
-#' @rdname geom_timeline
-#' @format NULL
-#' @usage NULL
+#' Add timeline labels
+#'
+#' This function adds label to the timeline geom.
+#'
+#' @section Aesthetics: `geom_pointpath()` understands the following
+#'   aesthetics (required aesthetics are in bold):
+#'   \itemize{\item{**`x`**} \item{**`xmin`**} \item{**`xmax`**}
+#'   \item{`y`} \item{`linewidth`} \item{`linetype`} \item{`linecolour`}}
+#'   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
+#'   \item{`stroke`}
+#'
+#' @return A layer \code{ggproto} object.
+#'
+#' @importFrom cli cli_abort
+#' @importFrom ggplot2 aes alpha ggproto layer
+#' @importFrom grid gpar gList linesGrob textGrob unit
+#'
 #' @export
+#'
+#' @examples
+#' data(mexico)
+#' mexico %>%
+#'  eq_clean_data() %>%
+#'  filter(lubridate::year(DATE) >= 1990) %>%
+#'  ggplot() +
+#'  geom_timeline(aes(
+#'   x = DATE,
+#'   xmin = min(DATE),
+#'   xmax = max(DATE)
+#'   )
+#'  ) +
+#'  geom_timeline_label(label = LOCATION)
+#'
+#' # use case with `annotate`
+#'
 geom_timeline_label <- function(mapping = NULL,
                           data = NULL,
                           stat = "identity",
@@ -28,18 +59,23 @@ geom_timeline_label <- function(mapping = NULL,
                     ...)
     )
 }
+# ggproto ------------------------------------------------------
 
-
+#' @format NULL
+#' @usage NULL
+#' @export
+#' @rdname geom_timeline
 GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                         required_aes = c("x", "label"),
-                        default_aes = aes(n_max = "all",
-                                          filter = NULL,
-                                          filter_desc = TRUE,
-                                          line_color = "grey",
-                                          text_color = "black",
-                                          check_overlap = TRUE,
-                                          alt_labels = FALSE
-                                          ),
+                        default_aes = ggplot2::aes(
+                          n_max = "all",
+                          filter = NULL,
+                          filter_desc = TRUE,
+                          linecolour = "grey",
+                          textcolour = "black",
+                          check_overlap = TRUE,
+                          alt_labels = FALSE,
+                        ),
 
                         draw_key = draw_key_text,
 
@@ -79,20 +115,20 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                             data$yend[seq(1, nrow(data), 2)] <- data$y[seq(1, nrow(data), 2)] - 0.1
                           }
 
-
                           coords <- coord$transform(data, panel_params)
 
-                          # draw line
                           line_grobs <- lapply(seq_len(nrow(coords)), function(i) {
-                            grid::linesGrob(x = unit(coords$x[i], "npc"),
-                                      y = grid::unit(c(coords$y[i], coords$yend[i]), "npc"),
-                                      gp = grid::gpar(col = coords$line_colour[i])
+                            grid::linesGrob(
+                              x = grid::unit(coords$x[i], "npc"),
+                              y = grid::unit(c(coords$y[i], coords$yend[i]), "npc"),
+                              gp = grid::gpar(
+                                col = ggplot2::alpha(coords$linecolour[i], coords$alpha[i])
+                                )
                             )
                           })
 
                           lines_tree <- do.call("grobTree", line_grobs)
 
-                          # add label text
                           if (first_row$alt_labels == TRUE) {
                             coords$hjust <- ifelse(coords$yend > coords$y, 0, 1)
                           } else {
@@ -110,7 +146,6 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                             check.overlap = first_row$check_overlap
                           )
 
-                          # grid::grobTree(lines_tree, text_grob)
                           grid::gList(lines_tree, text_grob)
                         }
 )

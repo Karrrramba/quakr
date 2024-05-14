@@ -10,6 +10,11 @@
 #'   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
 #'   \item{`stroke`}
 #'
+#' @param x A date vector specifying the occurrences of earthquakes.
+#' @param xmin A date value specifying the left boundary of the timeline.
+#' @param xmax A date value specifying the right boundary of the timeline.
+#' @param y A factor specifying any stratification for multiple timelines.
+#'   By default one timeline is plotted in the middle of the viewport.
 #' @inheritParams ggplot2::GeomPoint
 #' @inheritParams ggplot2::GeomLine
 #'

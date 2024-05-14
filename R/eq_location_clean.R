@@ -5,8 +5,8 @@
 #'
 #' @param data A data frame.
 #'
-#' @importFrom dplyr mutate select
-#' @importFrom stringr  str_to_title
+#' @importFrom dplyr mutate
+#' @importFrom stringr str_to_title
 #' @importFrom tidyr separate_longer_delim separate_wider_delim
 #'
 #' @examples
@@ -18,12 +18,13 @@
 eq_location_clean <- function(data){
 
     data <- data %>%
-      tidyr::separate_longer_delim(location_name, delim = ";") %>%
-      tidyr::separate_wider_delim(location_name, names = c("country", "location"),
-                                  delim = ":", cols_remove = TRUE,
+      tidyr::separate_longer_delim(., location_name, delim = ";") %>%
+      tidyr::separate_wider_delim(., location_name, names = c("country", "location"),
+                                  delim = ": ", cols_remove = TRUE,
                                   too_few = "align_start", too_many = "merge") %>%
-      mutate(location = stringr::str_to_title(location))
-      dplyr::select(!location_name)
+      mutate(location = stringr::str_to_title(location),
+             location = gsub('"', '', trimws(location))
+             )
 
   data
 }

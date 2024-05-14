@@ -1,9 +1,9 @@
-#' Draw a Map with Earthquake Locations
+#' Draws a Map with Earthquake Locations
 #'
 #' @description
 #' \code{eq_map} plots the locations of earthquake events on a geographical map
-#'   of given countries (see examples below). Locations are plotted as
-#'   red circles with labels.
+#'   of one or multiple countries. Earthquake locations are plotted as
+#'   red circles with labels and size scaled based on magnitude.
 #'
 #' @param data A data frame containing columns for "country",
 #'   "magnitude", "longitude" and "latitude". The latter two must be values in [deg].
@@ -28,7 +28,7 @@
 #' southamerica %>%
 #'   eq_clean_data(.) %>%
 #'   filter(year(DATE) > 2000) %>%
-#'   eq_map(annot_col = "DATE")
+#'   eq_map(annot_col = "MAG")
 #'
 #' @export
 

@@ -18,6 +18,7 @@ eq_location_clean <- function(data){
 
   if (toupper("LOCATION_NAME") %in% names(data)) {
     data <- data %>%
+      tidyr::separate_rows(LOCATION_NAME, sep = ";") %>%
       dplyr::mutate(
         COUNTRY = stringr::str_extract(LOCATION_NAME, "(^[a-zA-Z]+)"),
         LOCATION = stringr::str_remove(LOCATION_NAME, "(^[a-zA-Z]+)\\W+"),

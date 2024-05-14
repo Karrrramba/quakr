@@ -4,10 +4,15 @@
 #'
 #' @section Aesthetics: `geom_pointpath()` understands the following
 #'   aesthetics (required aesthetics are in bold):
-#'   \itemize{\item{**`x`**} \item{**`xmin`**} \item{**`xmax`**}
-#'   \item{`y`} \item{`linewidth`} \item{`linetype`} \item{`linecolour`}}
+#'   \itemize{\item{**`x`**} \item{**`label`**}
+#'   \item{`linewidth`} \item{`linetype`} \item{`linecolour`}}
 #'   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
 #'   \item{`stroke`}
+#' @param n_max An integer value or "all" (default) that limits the number of
+#'  labels based on earthquake magnitude.
+#' @param alt_label Logical toggles horizontally alternating orientation of
+#'  labels to reduce overlapping. Defaults to `FALSE`.
+#' @inheritParams ggplot2::GeomLabel
 #'
 #' @return A layer \code{ggproto} object.
 #'
@@ -64,7 +69,7 @@ geom_timeline_label <- function(mapping = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-#' @rdname geom_timeline
+#' @rdname geom_timeline_label
 GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                         required_aes = c("x", "label"),
                         default_aes = ggplot2::aes(

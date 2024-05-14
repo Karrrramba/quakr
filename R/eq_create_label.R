@@ -1,7 +1,11 @@
 #' Create Event Labels
 #'
 #' @description
-#' Dynamically creates labels
+#' Helper function that creates a new information column composed of:
+#' date (in %Y-%m-%d format), magnitude and total number of casualties.
+#' The resulting information are newline separated to keep the labels
+#' adequately small. The labels do not show missing values. Instead, the respecitve
+#' information is ommitted.
 #'
 #' @param data description
 #'
@@ -13,8 +17,6 @@
 #'   filter(year(DATE) > 2000) %>%
 #'   mutate(popup_text = eq_create_label(.))
 #'   eq_map(annot_col = "popup_text")
-#'
-#'
 #'
 #' @export
 

@@ -19,14 +19,13 @@
 eq_clean_data <- function(data) {
   data <- data %>%
     janitor::clean_names(.) %>%
-    dplyr::rename_with(toupper) %>%
-    dplyr::filter(!is.na(LOCATION_NAME)) %>%
+    dplyr::filter(!is.na(location_name)) %>%
     eq_location_clean(.) %>%
-    dplyr::mutate(DATE = lubridate::make_date(YEAR, MO, DY)) %>%
-    dplyr::relocate(DATE, .before = LOCATION) %>%
-    dplyr::relocate(c(COUNTRY, LOCATION), .before = LATITUDE) %>%
-    dplyr::select(!c(YEAR, MO, DY)) %>%
-    dplyr::filter(!is.na(DATE))
+    dplyr::mutate(date = lubridate::make_date(year, mo, dy)) %>%
+    dplyr::relocate(date, .before = location) %>%
+    dplyr::relocate(c(country, location), .before = latitude) %>%
+    dplyr::select(!c(year, mo, dy)) %>%
+    dplyr::filter(!is.na(date))
 
   data
 }

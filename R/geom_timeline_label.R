@@ -8,8 +8,12 @@
 #'   \item{`linewidth`} \item{`linetype`} \item{`linecolour`}}
 #'   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
 #'   \item{`stroke`}
-#' @param n_max An integer value or "all" (default) that limits the number of
-#'  labels based on earthquake magnitude.
+#' @param x A date vector specifying x values.
+#' @param n_max An integer value that limits the number of
+#'  labels based on the values mapped to `max_var`. If not defined all labels
+#'  are displayed. Defaults to `NULL`.
+#' @param max_var A numeric vector used in conjunction with `n_max` to reduce
+#'  labels to the `n_max` highest values. Defaults to the "mag" column.
 #' @param label_dodge Logical toggles vertically alternating orientation of
 #'  labels to reduce overlapping. Defaults to `FALSE`.
 #' @inheritParams ggplot2::GeomText
@@ -45,10 +49,9 @@ geom_timeline_label <- function(mapping = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           n_max = NULL,
-                          max_var = NULL,
+                          max_var = "mag",
                           label_dodge = FALSE,
                           check_overlap = FALSE,
-                          size.unit = "mm",
                           ...,
                           inherit.aes = TRUE)
   {
@@ -62,9 +65,8 @@ geom_timeline_label <- function(mapping = NULL,
       inherit.aes = inherit.aes,
       params = list(na.rm = na.rm,
                     check_overlap = check_overlap,
-                    size.unit = size.unit,
                     n_max = n_max,
-                    max_var = max_var,
+                    # max_var = max_var,
                     label_dodge = label_dodge,
                     ...)
     )
@@ -76,7 +78,7 @@ geom_timeline_label <- function(mapping = NULL,
 #' @export
 #' @rdname geom_timeline_label
 GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
-                        required_aes = "label",
+                        required_aes = c("x", "label"),
                         default_aes = ggplot2::aes(
                           linecolour = "grey",
                           textcolour = "black",
@@ -99,18 +101,9 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                           }
 
                           max_var <- first_row$max_var
-                          print(head(max_var))
+                          print(head(data))
 
-                          if (!is.null(nmax) && is.null(max_var)) {
-                            cli::cli_abort(c(
-                              "Both {.arg n_max} and {.arg max_var} must be specified",
-                              "i" = "It looks like you want to use {.arg n_max} but
-                                have not mapped any data to {.arg max_var}."
-                            )
-                            )
-                          }
-
-                          if (!is.null(max_var)) {
+                          if (!is.null(nmax)) {
                             data <- data[order(data$max_var, decreasing = TRUE), ]
                             data <- data[1:nmax, ]
                           }
@@ -130,7 +123,7 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
 
                           line_grobs <- lapply(seq_len(nrow(coords)), function(i) {
                             grid::linesGrob(
-                              x = grid::unit(coords$x[i], "npc"),
+                              x = grid::unit(c(coords$x[i], coords$x[i]), "npc"),
                               y = grid::unit(c(coords$y[i], coords$yend[i]), "npc"),
                               gp = grid::gpar(
                                 col = ggplot2::alpha(coords$linecolour[i], coords$alpha[i])
@@ -164,28 +157,16 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                         }
 )
 
-resolve_text_unit <- function(unit) {
-  unit <- rlang::arg_match0(unit, c("mm", "pt", "cm", "in", "pc"))
-  switch(
-    unit,
-    "mm" = .pt,
-    "cm" = .pt * 10,
-    "in" = 72.27,
-    "pc" = 12,
-    1
-  )
-}
-
 mexico %>%
  eq_clean_data() %>%
- filter(lubridate::year(DATE) >= 1990) %>%
+ filter(lubridate::year(date) >= 1990) %>%
  ggplot() +
- geom_timeline(aes(x = DATE,
-                   xmin = min(DATE),
-                   xmax = max(DATE)
+ geom_timeline(aes(x = date,
+                   xmin = min(date),
+                   xmax = max(date)
                    )
  ) +
-  geom_timeline_label(aes(label = MAG, max_var = COUNTRY), n_max = 3)
+  geom_timeline_label(aes(label = location), n_max = 3)
 
 
 

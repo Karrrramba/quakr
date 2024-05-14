@@ -1,9 +1,9 @@
-#' Timeline
+#' Plots a Timeline of Earthquake Events
 #'
 #' This function creates a timeline geom for ggplot2, which can be used to visualize
 #' events or intervals over a continuous time axis.
 #'
-#' @section Aesthetics: `geom_pointpath()` understands the following
+#' @section Aesthetics: `geom_timeline()` understands the following
 #'   aesthetics (required aesthetics are in bold):
 #'   \itemize{\item{**`x`**} \item{**`xmin`**} \item{**`xmax`**}
 #'   \item{`y`} \item{`linewidth`} \item{`linetype`} \item{`linecolour`}}

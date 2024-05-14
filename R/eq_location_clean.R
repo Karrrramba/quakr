@@ -1,6 +1,7 @@
 #' Extracts Location Information
 #'
 #' Helper function that splits the location name into 'country' and 'location'.
+#' International earthquake events are assigned to each country individually.
 #' Transforms the location names to title case.
 #'
 #' @param data A data frame.
@@ -8,6 +9,8 @@
 #' @importFrom dplyr mutate
 #' @importFrom stringr str_to_title
 #' @importFrom tidyr separate_longer_delim separate_wider_delim
+#'
+#' @returns A data frame.
 #'
 #' @examples
 #' data(mexico)

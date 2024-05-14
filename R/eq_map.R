@@ -9,6 +9,8 @@
 #'   "magnitude", "longitude" and "latitude". The latter two must be values in [deg].
 #'
 #' @param annot_col A vector of values which will be used for labels.
+#' @param scaling_factor A numeric value which scales the point size.
+#'   Defaults to 1.
 #'
 #' @retrurns An interactive leaflet map.
 #'
@@ -28,19 +30,19 @@
 #' southamerica %>%
 #'   eq_clean_data(.) %>%
 #'   filter(year(date) > 2000) %>%
-#'   eq_map(annot_col = "mag")
+#'   eq_map(annot_col = "mag", scaling_factor = 5)
 #'
 #' @export
 
-eq_map <- function(data, annot_col) {
+eq_map <- function(data, annot_col, scaling_factor = 1) {
 
   leaflet::leaflet() %>%
     leaflet::addProviderTiles("Esri.WorldTopoMap") %>%
     leaflet::addCircles(data = data,
                popup = ~ data[[annot_col]],
-               lng =  ~ LONGITUDE,
-               lat = ~ LATITUDE,
-               radius = ~ MAG * 5000,
+               lng =  ~ longitude,
+               lat = ~ latitude,
+               radius = ~ mag * (scaling_factor * 1000),
                color = ~ "darkred",
                fillOpacity = 0.4,
                weight = 1,

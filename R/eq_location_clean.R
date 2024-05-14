@@ -6,7 +6,8 @@
 #' @param data A data frame.
 #'
 #' @importFrom dplyr mutate select
-#' @importFrom stringr str_extract str_remove str_to_title
+#' @importFrom stringr  str_to_title
+#' @importFrom tidyr separate_longer_delim separate_wider_delim
 #'
 #' @examples
 #' # example code
@@ -16,15 +17,13 @@
 
 eq_location_clean <- function(data){
 
-  if (toupper("LOCATION_NAME") %in% names(data)) {
     data <- data %>%
-      tidyr::separate_rows(LOCATION_NAME, sep = ";") %>%
-      dplyr::mutate(
-        COUNTRY = stringr::str_extract(LOCATION_NAME, "(^[a-zA-Z]+)"),
-        LOCATION = stringr::str_remove(LOCATION_NAME, "(^[a-zA-Z]+)\\W+"),
-        LOCATION = stringr::str_to_title(LOCATION)) %>%
-      dplyr::select(!LOCATION_NAME)
-  }
+      tidyr::separate_longer_delim(location_name, delim = ";") %>%
+      tidyr::separate_wider_delim(location_name, names = c("country", "location"),
+                                  delim = ":", cols_remove = TRUE,
+                                  too_few = "align_start", too_many = "merge") %>%
+      mutate(location = stringr::str_to_title(location))
+      dplyr::select(!location_name)
 
   data
 }

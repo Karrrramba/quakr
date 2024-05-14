@@ -23,9 +23,10 @@ eq_clean_data <- function(data) {
     dplyr::filter(!is.na(LOCATION_NAME)) %>%
     eq_location_clean(.) %>%
     dplyr::mutate(DATE = lubridate::make_date(YEAR, MO, DY)) %>%
-    dplyr::relocate(DATE, .before = HR) %>%
+    dplyr::relocate(DATE, .before = LOCATION) %>%
     dplyr::relocate(c(COUNTRY, LOCATION), .before = LATITUDE) %>%
-    dplyr::select(!c(YEAR, MO, DY))
+    dplyr::select(!c(YEAR, MO, DY)) %>%
+    dplyr::filter(!is.na(DATE))
 
   data
 }

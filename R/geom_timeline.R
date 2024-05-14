@@ -10,6 +10,9 @@
 #'   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
 #'   \item{`stroke`}
 #'
+#' @inheritParams ggplot2::GeomPoint
+#' @inheritParams ggplot2::GeomLine
+#'
 #' @return A layer \code{ggproto} object.
 #'
 #' @importFrom ggplot2 aes alpha fill_alpha ggproto layer
@@ -42,7 +45,7 @@
 #'   xmax = max(DATE)
 #'   )
 #'  )
-#' @import ggplot2
+#'
 
 geom_timeline <- function(mapping = NULL,
                           data = NULL,

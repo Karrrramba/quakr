@@ -10,14 +10,14 @@
 #'   \item{`stroke`}
 #' @param n_max An integer value or "all" (default) that limits the number of
 #'  labels based on earthquake magnitude.
-#' @param alt_label Logical toggles horizontally alternating orientation of
+#' @param label_dodge Logical toggles vertically alternating orientation of
 #'  labels to reduce overlapping. Defaults to `FALSE`.
-#' @inheritParams ggplot2::GeomLabel
+#' @inheritParams ggplot2::GeomText
 #'
 #' @return A layer \code{ggproto} object.
 #'
 #' @importFrom cli cli_abort
-#' @importFrom ggplot2 aes alpha ggproto layer
+#' @importFrom ggplot2 aes alpha ggproto layer size_unit
 #' @importFrom grid gpar gList linesGrob textGrob unit
 #'
 #' @export
@@ -44,13 +44,13 @@ geom_timeline_label <- function(mapping = NULL,
                           position = "identity",
                           na.rm = FALSE,
                           show.legend = NA,
-                          inherit.aes = TRUE,
-                          n_max = "all",
-                          filter = NULL,
-                          filter_desc = TRUE,
-                          alt_labels = FALSE,
+                          n_max = NA,
+                          max_var = NULL,
+                          label_dodge = FALSE,
                           check_overlap = FALSE,
-                          ...)
+                          size.unit = "mm",
+                          ...,
+                          inherit.aes = TRUE)
   {
     ggplot2::layer(
       geom = GeomTimelineLabel,
@@ -61,6 +61,11 @@ geom_timeline_label <- function(mapping = NULL,
       show.legend = show.legend,
       inherit.aes = inherit.aes,
       params = list(na.rm = na.rm,
+                    check_overlap = check_overlap,
+                    size.unit = size.unit,
+                    n_max = n_max,
+                    max_var = max_var,
+                    label_dodge = label_dodge,
                     ...)
     )
 }
@@ -71,52 +76,53 @@ geom_timeline_label <- function(mapping = NULL,
 #' @export
 #' @rdname geom_timeline_label
 GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
-                        required_aes = c("x", "label"),
+                        required_aes = "label",
                         default_aes = ggplot2::aes(
-                          n_max = "all",
-                          filter = NULL,
-                          filter_desc = TRUE,
                           linecolour = "grey",
                           textcolour = "black",
-                          check_overlap = TRUE,
-                          alt_labels = FALSE,
+                          max_var = NULL,
                         ),
 
                         draw_key = draw_key_text,
 
-                        draw_group = function(data, panel_params, coord) {
-
+                        draw_group = function(data, panel_params, coord,
+                                              check_overlap = FALSE, size.unit = "mm",
+                                              n_max = NULL,
+                                              label_dodge = FALSE
+                                              ) {
 
                           first_row <- data[1, ]
-                          nmax <- first_row[ , "n_max"]
-
-                          if (is.numeric(nmax) && is.null(first_row$filter)) {
-                            cli::cli_abort(c(
-                              "Both {.arg n_max} and {.arg filter} must be specified",
-                              "i" = "It looks like you have not mapped any data to {.arg filter}"
-                            ))
+                          if (!is.numeric(n_max)) {
+                            cli::cli_abort("{.arg n_max} must be numeric.")
+                          } else {
+                          nmax <- as.integer(n_max)
                           }
 
-                          if (is.numeric(nmax)) {
-                            data$n_max <- as.integer(data$n_max)
-                            if (first_row$filter_desc == TRUE) {
-                              data <- data[order(data$filter, decreasing = TRUE), ]
-                            } else {
-                              data <- data[order(data$filter), ]
-                            }
+                          max_var <- first_row$max_var
+                          print(head(max_var))
+
+                          if (!is.null(nmax) && is.null(max_var)) {
+                            cli::cli_abort(c(
+                              "Both {.arg n_max} and {.arg max_var} must be specified",
+                              "i" = "It looks like you want to use {.arg n_max} but
+                                have not mapped any data to {.arg max_var}."
+                            )
+                            )
+                          }
+
+                          if (!is.null(max_var)) {
+                            data <- data[order(data$max_var, decreasing = TRUE), ]
                             data <- data[1:nmax, ]
-                          } else if(nmax != "all") {
-                            cli::cli_abort("{.arg n_max} must be numeric or 'all'")
                           }
 
                           if (is.null(first_row$y)) {
                             data$y <- 0.5
                             data$yend <- 0.55
                           } else {
-                            data$yend <-  data$y + 0.1
+                            data$yend <- data$y + 0.1
                           }
 
-                          if (first_row$alt_labels == TRUE) {
+                          if (label_dodge == TRUE) {
                             data$yend[seq(1, nrow(data), 2)] <- data$y[seq(1, nrow(data), 2)] - 0.1
                           }
 
@@ -134,11 +140,12 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
 
                           lines_tree <- do.call("grobTree", line_grobs)
 
-                          if (first_row$alt_labels == TRUE) {
+                          if (label_dodge == TRUE) {
                             coords$hjust <- ifelse(coords$yend > coords$y, 0, 1)
                           } else {
                             coords$hjust = 0
                           }
+
 
                           text_grob <- grid::textGrob(
                             label = coords$label,
@@ -147,25 +154,38 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                             rot = 15,
                             hjust = coords$hjust,
                             vjust = 0,
-                            gp = grid::gpar(size = 1),
-                            check.overlap = first_row$check_overlap
+                            gp = grid::gpar(
+                              fontsize = data$size,
+                              fontfamily = data$family),
+                            check_overlap = check_overlap
                           )
 
                           grid::gList(lines_tree, text_grob)
                         }
 )
 
+resolve_text_unit <- function(unit) {
+  unit <- rlang::arg_match0(unit, c("mm", "pt", "cm", "in", "pc"))
+  switch(
+    unit,
+    "mm" = .pt,
+    "cm" = .pt * 10,
+    "in" = 72.27,
+    "pc" = 12,
+    1
+  )
+}
 
-eq_clean %>%
-  filter(COUNTRY == "CHINA" & lubridate::year(DATE) >= 1990) %>%
-  ggplot(aes(x = lubridate::year(DATE)))+
-  geom_timeline(aes(xmin = min(lubridate::year(DATE)), xmax = max(lubridate::year(Date)))) +
-  geom_timeline_label(aes(label = LOCATION, n_max = 5, filter = MAG, filter_desc = FALSE))
+mexico %>%
+ eq_clean_data() %>%
+ filter(lubridate::year(DATE) >= 1990) %>%
+ ggplot() +
+ geom_timeline(aes(x = DATE,
+                   xmin = min(DATE),
+                   xmax = max(DATE)
+                   )
+ ) +
+  geom_timeline_label(aes(label = MAG, max_var = COUNTRY), n_max = 3)
 
 
-eq_clean %>%
-  filter(COUNTRY %in%  c("MEXICO", "JAPAN", "CHINA") & lubridate::year(DATE) >= 1990) %>%
-  ggplot(aes(x = lubridate::year(DATE), y = Country)) +
-  geom_timeline(aes(xmin = min(lubridate::year(DATE)), xmax = max(lubridate::year(DATE)), size = DEATHS)) +
-  geom_timeline_label(aes(label = LOCATION, n_max = "all", alt_labels = TRUE, check_overlap = TRUE))
 

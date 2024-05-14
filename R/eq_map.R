@@ -19,16 +19,16 @@
 #' data(mexico)
 #' mexico %>%
 #'   eq_clean_data(.) %>%
-#'   filter(year(DATE) > 2000) %>%
-#'   eq_map(annot_col = "DATE")
+#'   filter(year(date) > 2000) %>%
+#'   eq_map(annot_col = "date")
 #'
 #' # Ploteathquake events for multiple countries
 #' data(southamerica)
 #'
 #' southamerica %>%
 #'   eq_clean_data(.) %>%
-#'   filter(year(DATE) > 2000) %>%
-#'   eq_map(annot_col = "MAG")
+#'   filter(year(date) > 2000) %>%
+#'   eq_map(annot_col = "mag")
 #'
 #' @export
 

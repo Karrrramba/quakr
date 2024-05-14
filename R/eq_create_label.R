@@ -14,7 +14,7 @@
 #'
 #' mexico %>%
 #'   eq_clean_data(.) %>%
-#'   filter(year(DATE) > 2000) %>%
+#'   filter(year(date) > 2000) %>%
 #'   mutate(popup_text = eq_create_label(.))
 #'   eq_map(annot_col = "popup_text")
 #'

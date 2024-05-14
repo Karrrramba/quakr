@@ -26,15 +26,15 @@
 #' data(mexico)
 #' mexico %>%
 #'  eq_clean_data() %>%
-#'  filter(lubridate::year(DATE) >= 1990) %>%
+#'  filter(lubridate::year(date) >= 1990) %>%
 #'  ggplot() +
 #'  geom_timeline(aes(
-#'   x = DATE,
-#'   xmin = min(DATE),
-#'   xmax = max(DATE)
+#'   x = date,
+#'   xmin = min(date),
+#'   xmax = max(date)
 #'   )
 #'  ) +
-#'  geom_timeline_label(label = LOCATION)
+#'  geom_timeline_label(label = location)
 #'
 #' # use case with `annotate`
 #'
@@ -44,7 +44,7 @@ geom_timeline_label <- function(mapping = NULL,
                           position = "identity",
                           na.rm = FALSE,
                           show.legend = NA,
-                          n_max = NA,
+                          n_max = NULL,
                           max_var = NULL,
                           label_dodge = FALSE,
                           check_overlap = FALSE,

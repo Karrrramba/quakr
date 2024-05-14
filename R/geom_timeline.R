@@ -24,25 +24,25 @@
 #' data(mexico)
 #' mexico %>%
 #'  eq_clean_data() %>%
-#'  filter(lubridate::year(DATE) >= 1990) %>%
+#'  filter(lubridate::year(date) >= 1990) %>%
 #'  ggplot() +
 #'  geom_timeline(aes(
-#'   x = DATE,
-#'   xmin = min(DATE),
-#'   xmax = max(DATE)
+#'   x = date,
+#'   xmin = min(date),
+#'   xmax = max(date)
 #'   )
 #'  )
 #'
 #' data(southamerica)
 #' southamerica %>%
 #'  eq_clean_data() %>%
-#'  filter(lubridate::year(DATE) >= 1990) %>%
+#'  filter(lubridate::year(date) >= 1990) %>%
 #'  ggplot() +
 #'  geom_timeline(aes(
-#'   x = DATE,
-#'   y = COUNTRY,
-#'   xmin = min(DATE),
-#'   xmax = max(DATE)
+#'   x = date,
+#'   y = country,
+#'   xmin = min(date),
+#'   xmax = max(date)
 #'   )
 #'  )
 #'

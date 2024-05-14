@@ -12,8 +12,9 @@
 #' @importFrom lubridate make_date
 #'
 #' @examples
-#' # example code
-#'
+#' data(mexico)
+#' mexico %>%
+#'   eq_clean_data()
 #'
 #' @export
 eq_clean_data <- function(data) {

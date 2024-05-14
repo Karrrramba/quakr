@@ -10,8 +10,10 @@
 #' @importFrom tidyr separate_longer_delim separate_wider_delim
 #'
 #' @examples
-#' # example code
-#'
+#' data(mexico)
+#' mexico %>%
+#'   janitor::clean_names(.) %>%
+#'   eq_location_clean()
 #'
 #' @export
 

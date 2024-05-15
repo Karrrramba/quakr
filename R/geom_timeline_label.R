@@ -161,18 +161,3 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                           grid::gList(lines_tree, text_grob)
                         }
 )
-
-southamerica %>%
-  eq_clean_data() %>%
-  filter(lubridate::year(date) >= 2005 & country %in% c("ARGENTINA", "PERU", "CHILE")) %>%
-  ggplot(aes(x = date, y = country)) +
-  geom_timeline(aes(
-    xmin = min(date),
-    xmax = max(date)
-    # , size = mag
-
-  )
-  , size = 3
-  ) +
-  geom_timeline_label(aes(label = location), n_max = 3, label_dodge = TRUE, rot = 15)
-

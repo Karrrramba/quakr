@@ -10,10 +10,11 @@
 #'   \item{`stroke`}
 #' @param x A date vector specifying x values.
 #' @param n_max An integer value that limits the number of
-#'  labels based on the values mapped to `max_var`. If not defined all labels
+#'  labels based on the values mapped to `limit_var`. If not defined all labels
 #'  are displayed. Defaults to `NULL`.
-#' @param max_var A numeric vector used in conjunction with `n_max` to reduce
-#'  labels to the `n_max` highest values. Defaults to the "mag" column.
+#' @param limit_var A variable used in conjunction with `n_max` to limit
+#'   the number of displayed labels to the equal `n_max`, based on the highest
+#'   values of the `limit_var`. Defaults to `NULL`.
 #' @param label_dodge Logical toggles vertically alternating orientation of
 #'  labels to reduce overlapping. Defaults to `FALSE`.
 #' @inheritParams ggplot2::GeomText
@@ -28,19 +29,26 @@
 #'
 #' @examples
 #' data(mexico)
-#' mexico %>%
+#' p <- mexico %>%
 #'  eq_clean_data() %>%
 #'  filter(lubridate::year(date) >= 1990) %>%
-#'  ggplot() +
+#'  ggplot(aes(x = date)) +
 #'  geom_timeline(aes(
-#'   x = date,
 #'   xmin = min(date),
 #'   xmax = max(date)
 #'   )
-#'  ) +
-#'  geom_timeline_label(label = location)
+#'  )
+#' p + geom_timeline_label(label = location)
+#'
+#' #limit number of displayed labels
+#' p + geom_timeline_label(aes(label = location, limit_var = mag), n_max = 3)
 #'
 #' # use case with `annotate`
+#' p + annotate(
+#'   "timeline_label",
+#'
+#'   )
+#'
 #'
 geom_timeline_label <- function(mapping = NULL,
                           data = NULL,
@@ -49,7 +57,7 @@ geom_timeline_label <- function(mapping = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           n_max = NULL,
-                          max_var = "mag",
+                          limit_var = NULL,
                           label_dodge = FALSE,
                           check_overlap = FALSE,
                           ...,
@@ -66,7 +74,6 @@ geom_timeline_label <- function(mapping = NULL,
       params = list(na.rm = na.rm,
                     check_overlap = check_overlap,
                     n_max = n_max,
-                    # max_var = max_var,
                     label_dodge = label_dodge,
                     ...)
     )
@@ -80,46 +87,49 @@ geom_timeline_label <- function(mapping = NULL,
 GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                         required_aes = c("x", "label"),
                         default_aes = ggplot2::aes(
+                          limit_var = NULL,
                           linecolour = "grey",
                           textcolour = "black",
-                          max_var = NULL,
+                          alpha = 1
                         ),
 
                         draw_key = draw_key_text,
 
                         draw_group = function(data, panel_params, coord,
-                                              check_overlap = FALSE, size.unit = "mm",
+                                              rot = 15,
+                                              check_overlap = FALSE,
                                               n_max = NULL,
                                               label_dodge = FALSE
                                               ) {
 
                           first_row <- data[1, ]
-                          if (!is.numeric(n_max)) {
-                            cli::cli_abort("{.arg n_max} must be numeric.")
-                          } else {
-                          nmax <- as.integer(n_max)
+                          limit <- first_row$limit_var
+
+                          if ((!is.null(n_max) && is.numeric(n_max)) && !is.null(limit)) {
+                            data <- data[order(data$limit_var, decreasing = TRUE), ][1:as.integer(n_max), ]
+                            # data <- data[1:as.integer(n_max), ]
                           }
 
-                          max_var <- first_row$max_var
-                          print(head(data))
 
-                          if (!is.null(nmax)) {
-                            data <- data[order(data$max_var, decreasing = TRUE), ]
-                            data <- data[1:nmax, ]
-                          }
+                          previous_data <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]
+                          size <- previous_data$size
+
+                          y_scaler <- ifelse(max(size) == min(size), 0.15, 0.03 * max(size))
+                          print(y_scaler)
 
                           if (is.null(first_row$y)) {
                             data$y <- 0.5
-                            data$yend <- 0.55
-                          } else {
-                            data$yend <- data$y + 0.1
                           }
+
+                          data$yend <- data$y + y_scaler
 
                           if (label_dodge == TRUE) {
-                            data$yend[seq(1, nrow(data), 2)] <- data$y[seq(1, nrow(data), 2)] - 0.1
+                            data$yend[seq(1, nrow(data), 2)] <- data$y[seq(1, nrow(data), 2)] - y_scaler
                           }
 
+
                           coords <- coord$transform(data, panel_params)
+                          print(head(coords))
 
                           line_grobs <- lapply(seq_len(nrow(coords)), function(i) {
                             grid::linesGrob(
@@ -133,40 +143,41 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
 
                           lines_tree <- do.call("grobTree", line_grobs)
 
+
                           if (label_dodge == TRUE) {
                             coords$hjust <- ifelse(coords$yend > coords$y, 0, 1)
+                            coords$vjust <- ifelse(coords$yend > coords$y, 0, 1)
                           } else {
                             coords$hjust = 0
+                            coords$vjust = 0
                           }
-
 
                           text_grob <- grid::textGrob(
                             label = coords$label,
                             x = grid::unit(coords$x, "npc"),
                             y = grid::unit(coords$yend, "npc"),
-                            rot = 15,
+                            rot = rot,
                             hjust = coords$hjust,
-                            vjust = 0,
+                            vjust = coords$vjust,
                             gp = grid::gpar(
                               fontsize = data$size,
                               fontfamily = data$family),
-                            check_overlap = check_overlap
+                            check.overlap = check_overlap
                           )
 
                           grid::gList(lines_tree, text_grob)
                         }
 )
 
-mexico %>%
- eq_clean_data() %>%
- filter(lubridate::year(date) >= 1990) %>%
- ggplot() +
- geom_timeline(aes(x = date,
-                   xmin = min(date),
-                   xmax = max(date)
-                   )
- ) +
-  geom_timeline_label(aes(label = location), n_max = 3)
+southamerica %>%
+  eq_clean_data() %>%
+  filter(lubridate::year(date) >= 2005 & country %in% c("ARGENTINA", "PERU", "CHILE")) %>%
+  ggplot(aes(x = date, y = country)) +
+  geom_timeline(aes(
+    xmin = min(date),
+    xmax = max(date)
 
-
+  ), size = 3
+  ) +
+  geom_timeline_label(aes(label = location), n_max = 3, check_overlap = TRUE, label_dodge = TRUE, rot = 15)
 

@@ -21,7 +21,6 @@
 #' data(mexico)
 #' mexico %>%
 #'   eq_clean_data(.) %>%
-#'   filter(year(date) > 2000) %>%
 #'   eq_map(annot_col = "date")
 #'
 #' # Ploteathquake events for multiple countries

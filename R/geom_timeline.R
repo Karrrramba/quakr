@@ -18,39 +18,30 @@
 #' @inheritParams ggplot2::GeomPoint
 #' @inheritParams ggplot2::GeomLine
 #'
-#' @return A layer \code{ggproto} object.
+#' @returns A layer \code{ggproto} object.
 #'
 #' @importFrom ggplot2 aes alpha fill_alpha ggproto layer
 #' @importFrom grid gpar gList pointsGrob segmentsGrob unit
 #'
-#' @export
-#'
 #' @examples
+#' #single timeline without `y` aesthetic
 #' data(mexico)
-#' mexico %>%
+#' p <- mexico %>%
 #'  eq_clean_data() %>%
-#'  filter(lubridate::year(date) >= 1990) %>%
-#'  ggplot() +
-#'  geom_timeline(aes(
-#'   x = date,
-#'   xmin = min(date),
-#'   xmax = max(date)
-#'   )
-#'  )
+#'  ggplot(aes(x = date)))
 #'
+#' p + geom_timeline(aes(xmin = min(date), xmax = max(date))
+#'
+#' #multiple timelines
 #' data(southamerica)
-#' southamerica %>%
+#' s <- southamerica %>%
 #'  eq_clean_data() %>%
 #'  filter(lubridate::year(date) >= 1990) %>%
-#'  ggplot() +
-#'  geom_timeline(aes(
-#'   x = date,
-#'   y = country,
-#'   xmin = min(date),
-#'   xmax = max(date)
-#'   )
-#'  )
+#'  ggplot(aes(x = date, y = country))
 #'
+#' s + geom_timeline(aes(xmin = min(date), xmax = max(date))
+#'
+#' @export
 
 geom_timeline <- function(mapping = NULL,
                           data = NULL,

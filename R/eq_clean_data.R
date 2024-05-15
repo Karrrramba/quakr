@@ -7,6 +7,8 @@
 #'
 #' @param data A data frame with raw NCEI earthquake data.
 #'
+#' @returns A data frame.
+#'
 #' @importFrom dplyr filter mutate relocate rename_with select
 #' @importFrom janitor clean_names
 #' @importFrom lubridate make_date
@@ -20,11 +22,9 @@
 eq_clean_data <- function(data) {
   data <- data %>%
     janitor::clean_names(.) %>%
-    dplyr::filter(!is.na(location_name)) %>%
     eq_location_clean(.) %>%
     dplyr::mutate(date = lubridate::make_date(year, mo, dy)) %>%
-    dplyr::relocate(date, .before = location) %>%
-    dplyr::relocate(c(country, location), .before = latitude) %>%
+    dplyr::relocate(c(country, location, date), .before = latitude) %>%
     dplyr::select(!c(year, mo, dy)) %>%
     dplyr::filter(!is.na(date))
 

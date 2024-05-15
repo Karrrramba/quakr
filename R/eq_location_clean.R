@@ -7,7 +7,7 @@
 #' @param data A data frame with column names with underscores (`_`) instead of
 #' whitespaces and lower letter case
 #'
-#' @importFrom dplyr across mutate
+#' @importFrom dplyr across filter mutate
 #' @importFrom stringr str_to_title
 #' @importFrom tidyr separate_longer_delim separate_wider_delim
 #'
@@ -25,6 +25,7 @@
 eq_location_clean <- function(data){
 
     data <- data %>%
+      dplyr::filter(!is.na(location_name)) %>%
       tidyr::separate_longer_delim(., location_name, delim = ";") %>%
       tidyr::separate_wider_delim(., location_name,
                                   names = c("country", "location"),

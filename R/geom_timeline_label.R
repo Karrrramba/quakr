@@ -1,14 +1,17 @@
 #' Add timeline labels
 #'
-#' This function adds label to the timeline geom.
+#' This function adds label to the timeline geom. The distance between the timeline
+#' and the labels is static when no `size` aesthetic is specified and calculated
+#' based on max point size otherwise.
 #'
-#' @section Aesthetics: `geom_pointpath()` understands the following
+#' @section Aesthetics: `geom_timeline_label()` understands the following
 #'   aesthetics (required aesthetics are in bold):
 #'   \itemize{\item{**`x`**} \item{**`label`**}
 #'   \item{`linewidth`} \item{`linetype`} \item{`linecolour`}}
 #'   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
 #'   \item{`stroke`}
 #' @param x A date vector specifying x values.
+#' @param label A vector specifying the information to be displayed.
 #' @param n_max An integer value that limits the number of
 #'  labels based on the values mapped to `limit_var`. If not defined all labels
 #'  are displayed. Defaults to `NULL`.
@@ -22,34 +25,31 @@
 #' @return A layer \code{ggproto} object.
 #'
 #' @importFrom cli cli_abort
-#' @importFrom ggplot2 aes alpha ggproto layer size_unit
+#' @importFrom ggplot2 aes alpha ggplot_build ggproto last_plot layer size_unit
 #' @importFrom grid gpar gList linesGrob textGrob unit
 #'
-#' @export
 #'
 #' @examples
 #' data(mexico)
 #' p <- mexico %>%
 #'  eq_clean_data() %>%
-#'  filter(lubridate::year(date) >= 1990) %>%
 #'  ggplot(aes(x = date)) +
 #'  geom_timeline(aes(
 #'   xmin = min(date),
 #'   xmax = max(date)
 #'   )
 #'  )
-#' p + geom_timeline_label(label = location)
 #'
-#' #limit number of displayed labels
-#' p + geom_timeline_label(aes(label = location, limit_var = mag), n_max = 3)
+#' p + geom_timeline_label(aes(label = location))
 #'
-#' # use case with `annotate`
-#' p + annotate(
-#'   "timeline_label",
+#' #use `label_dodge` to reduce overlapping
+#' p + geom_timeline_label(aes(label = location), label_dodge = TRUE)
 #'
-#'   )
+#' #limit number of displayed labels based on earthquake magnitude
+#' p + geom_timeline_label(aes(label = mag))
+#' p + geom_timeline_label(aes(label = mag, limit_var = mag), n_max = 3)
 #'
-#'
+#' @export
 geom_timeline_label <- function(mapping = NULL,
                           data = NULL,
                           stat = "identity",
@@ -88,7 +88,7 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                         required_aes = c("x", "label"),
                         default_aes = ggplot2::aes(
                           limit_var = NULL,
-                          linecolour = "grey",
+                          linecolour = "black",
                           textcolour = "black",
                           alpha = 1
                         ),
@@ -103,19 +103,13 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                                               ) {
 
                           first_row <- data[1, ]
-                          limit <- first_row$limit_var
 
-                          if ((!is.null(n_max) && is.numeric(n_max)) && !is.null(limit)) {
+                          if ((!is.null(n_max) && is.numeric(n_max)) && !is.null(first_row$limit)) {
                             data <- data[order(data$limit_var, decreasing = TRUE), ][1:as.integer(n_max), ]
-                            # data <- data[1:as.integer(n_max), ]
                           }
 
-
-                          previous_data <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]
-                          size <- previous_data$size
-
+                          size <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size
                           y_scaler <- ifelse(max(size) == min(size), 0.15, 0.03 * max(size))
-                          print(y_scaler)
 
                           if (is.null(first_row$y)) {
                             data$y <- 0.5
@@ -129,7 +123,6 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
 
 
                           coords <- coord$transform(data, panel_params)
-                          print(head(coords))
 
                           line_grobs <- lapply(seq_len(nrow(coords)), function(i) {
                             grid::linesGrob(
@@ -176,8 +169,10 @@ southamerica %>%
   geom_timeline(aes(
     xmin = min(date),
     xmax = max(date)
+    # , size = mag
 
-  ), size = 3
+  )
+  , size = 3
   ) +
-  geom_timeline_label(aes(label = location), n_max = 3, check_overlap = TRUE, label_dodge = TRUE, rot = 15)
+  geom_timeline_label(aes(label = location), n_max = 3, label_dodge = TRUE, rot = 15)
 

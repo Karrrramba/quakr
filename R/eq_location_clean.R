@@ -33,12 +33,10 @@ eq_location_clean <- function(data){
                                   too_few = "align_start",
                                   too_many = "merge"
       ) %>%
-      mutate(
+      dplyr::mutate(
         location = stringr::str_to_title(.),
-        across(c(location, country), ~gsub('"', '', trimws(location))),
+        dplyr::across(c(location, country), ~gsub('"', '', trimws(.))),
       )
 
     data
 }
-
-

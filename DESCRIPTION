@@ -8,10 +8,9 @@ Authors@R:
            role = c("aut", "cre"),
            email = "michael.rackiewicz@gmail.com")
 Description: Allows data processing and visualization of NCEI earthquake data 
-    via custom `ggplot2` geoms as well as interactive geospatial plots 
-    using `leaflet`.
+    via custom 'ggplot2' geoms as well as interactive geospatial plots 
+    using 'leaflet'.
 License: MIT + file LICENSE
-BugReports: https://github.com/Karrrramba/quakr/issues
 Encoding: UTF-8
 LazyData: true
 Suggests: 

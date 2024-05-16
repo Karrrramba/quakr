@@ -1,8 +1,7 @@
-#' Formats Raw NCEI Data
+#' Formats raw NCEI data for visualizations
 #'
 #' Performs various data formatting tasks: cleans and capitalizes column names,
-#' merges columns 'year', 'mo' and 'dy' to create the 'date' column,
-#' splits 'country name' to create 'country' and 'location' columns,
+#' creates the 'date' as well as 'country' and 'location' columns,
 #' and removes the respective original columns.
 #'
 #' @param data A data frame with raw NCEI earthquake data.

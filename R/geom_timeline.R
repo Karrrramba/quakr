@@ -1,6 +1,6 @@
-#' Plots a Timeline of Earthquake Events
+#' Plots a timeline of earthquake events
 #'
-#' This function creates a timeline geom for ggplot2, which can be used to visualize
+#' Creates a timeline geom for ggplot2, which can be used to visualize
 #' events or intervals over a continuous time axis.
 #'
 #' @section Aesthetics: `geom_timeline()` understands the following

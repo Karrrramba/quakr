@@ -1,4 +1,4 @@
-#' Extracts Location Information
+#' Extracts location information
 #'
 #' Helper function that splits the location name into 'country' and 'location'.
 #' International earthquake events are assigned to each country individually.

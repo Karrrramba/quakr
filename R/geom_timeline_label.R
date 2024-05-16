@@ -1,4 +1,4 @@
-#' Add timeline labels
+#' Add labels to geom_timeline
 #'
 #' This function adds label to the timeline geom. The distance between the timeline
 #' and the labels is static when no `size` aesthetic is specified and calculated

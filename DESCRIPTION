@@ -1,12 +1,17 @@
 Package: quakr
 Type: Package
-Title: Creates Geospatial Plots and Timelines of Eathquake Events
+Title: Creates Visualizations of Eathquakes
 Version: 0.1.0
-Author: Michal Rackiewicz
-Maintainer: The package maintainer <michael.rackiewicz@gmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Authors@R: 
+    person(given = "Michal",
+           family = "Rackiewicz",
+           role = c("aut", "cre"),
+           email = "michael.rackiewicz@gmail.com")
+Description: Allows data processing and visualization of NCEI earthquake data 
+    via custom `ggplot2` geoms as well as interactive geospatial plots 
+    using `leaflet`.
 License: MIT + file LICENSE
+BugReports: https://github.com/Karrrramba/quakr/issues
 Encoding: UTF-8
 LazyData: true
 Suggests: 
@@ -22,3 +27,4 @@ Imports:
     leaflet,
     lubridate,
     readr
+RoxygenNote: 7.3.1

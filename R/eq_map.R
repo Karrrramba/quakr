@@ -17,15 +17,12 @@
 #' @importFrom leaflet leaflet addProviderTiles addCircles
 #'
 #' @examples
-#' # Plot eartquake events for a single country
-#' data(mexico)
+#' # Plot earthquake events for a single country
 #' mexico %>%
 #'   eq_clean_data(.) %>%
 #'   eq_map(annot_col = "date")
 #'
-#' # Ploteathquake events for multiple countries
-#' data(southamerica)
-#'
+#' # Plot earthquake events for multiple countries
 #' southamerica %>%
 #'   eq_clean_data(.) %>%
 #'   filter(year(date) > 2000) %>%

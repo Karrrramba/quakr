@@ -30,7 +30,6 @@
 #'
 #'
 #' @examples
-#' data(mexico)
 #' p <- mexico %>%
 #'  eq_clean_data() %>%
 #'  ggplot(aes(x = date)) +

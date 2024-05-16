@@ -13,9 +13,6 @@
 #' @returns A data frame with HTML-formatted label information.
 #'
 #' @examples
-#' data(mexico)
-#'
-#'
 #' #create and use labels in a plot
 #' mexico %>%
 #'   eq_clean_data(.) %>%

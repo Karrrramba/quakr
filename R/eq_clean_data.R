@@ -13,7 +13,6 @@
 #' @importFrom lubridate make_date
 #'
 #' @examples
-#' data(mexico)
 #' mexico %>%
 #'   eq_clean_data()
 #'

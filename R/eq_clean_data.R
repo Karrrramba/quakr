@@ -2,7 +2,8 @@
 #'
 #' Performs various data formatting tasks: cleans and capitalizes column names,
 #' creates the 'date' as well as 'country' and 'location' columns,
-#' and removes the respective original columns.
+#' and removes the respective original columns. Observations without complete date
+#' information are removed.
 #'
 #' @param data A data frame with raw NCEI earthquake data.
 #'

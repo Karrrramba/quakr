@@ -26,14 +26,12 @@
 #' @examples
 #' #single timeline without `y` aesthetic
 #' p <- mexico %>%
-#'  eq_clean_data() %>%
 #'  ggplot(aes(x = date)))
 #'
 #' p + geom_timeline(aes(xmin = min(date), xmax = max(date))
 #'
 #' #multiple timelines
 #' s <- southamerica %>%
-#'  eq_clean_data() %>%
 #'  filter(lubridate::year(date) >= 1990) %>%
 #'  ggplot(aes(x = date, y = country))
 #'

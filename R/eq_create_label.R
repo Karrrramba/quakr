@@ -15,7 +15,6 @@
 #' @examples
 #' #create and use labels in a plot
 #' mexico %>%
-#'   eq_clean_data(.) %>%
 #'   mutate(popup_text = eq_create_label(.))
 #'   eq_map(annot_col = "popup_text")
 #'

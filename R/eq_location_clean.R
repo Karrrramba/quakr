@@ -25,7 +25,7 @@ eq_location_clean <- function(data){
 
     data <- data %>%
       dplyr::filter(!is.na(location_name)) %>%
-      tidyr::separate_longer_delim(., location_name, delim = ";") %>%
+      # tidyr::separate_longer_delim(., location_name, delim = ";") %>%
       tidyr::separate_wider_delim(., location_name,
                                   names = c("country", "location"),
                                   delim = ": ",

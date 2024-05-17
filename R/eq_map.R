@@ -19,12 +19,10 @@
 #' @examples
 #' # Plot earthquake events for a single country
 #' mexico %>%
-#'   eq_clean_data(.) %>%
 #'   eq_map(annot_col = "date")
 #'
 #' # Plot earthquake events for multiple countries
 #' southamerica %>%
-#'   eq_clean_data(.) %>%
 #'   filter(year(date) > 2000) %>%
 #'   eq_map(annot_col = "mag", scaling_factor = 5)
 #'

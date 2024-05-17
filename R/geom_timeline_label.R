@@ -31,7 +31,6 @@
 #'
 #' @examples
 #' p <- mexico %>%
-#'  eq_clean_data() %>%
 #'  ggplot(aes(x = date)) +
 #'  geom_timeline(aes(
 #'   xmin = min(date),

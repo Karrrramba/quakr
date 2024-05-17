@@ -30,7 +30,8 @@
 #'
 #'
 #' @examples
-#' p <- mexico %>%
+#' p <- southamerica %>%
+#' filter(country == "CHILE" & year(date) >= 1970) %>%
 #'  ggplot(aes(x = date)) +
 #'  geom_timeline(aes(
 #'   xmin = min(date),

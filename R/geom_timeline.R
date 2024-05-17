@@ -25,7 +25,8 @@
 #'
 #' @examples
 #' #single timeline without `y` aesthetic
-#' p <- mexico %>%
+#' p <- southamerica %>%
+#' filter(country == "CHILE" & year(date) >= 1970) %>%
 #'  ggplot(aes(x = date)))
 #'
 #' p + geom_timeline(aes(xmin = min(date), xmax = max(date))

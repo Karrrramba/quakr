@@ -18,7 +18,8 @@
 #'
 #' @examples
 #' # Plot earthquake events for a single country
-#' mexico %>%
+#' southamerica %>%
+#' filter(country == "CHILE" & year(date) >= 1970) %>% %>%
 #'   eq_map(annot_col = "date")
 #'
 #' # Plot earthquake events for multiple countries

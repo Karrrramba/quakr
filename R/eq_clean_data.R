@@ -14,8 +14,9 @@
 #' @importFrom lubridate make_date
 #'
 #' @examples
-#' mexico %>%
-#'   eq_clean_data()
+#' southamerica %>%
+#'   eq_clean_data() %>%
+#'   head()
 #'
 #' @export
 eq_clean_data <- function(data) {

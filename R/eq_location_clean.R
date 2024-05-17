@@ -15,9 +15,10 @@
 #'
 #' @examples
 #' #uses `clean_names()` from the `janitor` package to tidy up column names
-#' mexico %>%
+#' southamerica %>%
 #'   janitor::clean_names(.) %>%
-#'   eq_location_clean()
+#'   eq_location_clean() %>%
+#'   head()
 #'
 #' @export
 

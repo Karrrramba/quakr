@@ -14,7 +14,8 @@
 #'
 #' @examples
 #' #create and use labels in a plot
-#' mexico %>%
+#' southamerica %>%
+#' filter(country == "CHILE" & year(date) >= 1970) %>%
 #'   mutate(popup_text = eq_create_label(.))
 #'   eq_map(annot_col = "popup_text")
 #'

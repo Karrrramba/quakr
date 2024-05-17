@@ -5,3 +5,4 @@
 .DS_Store
 .quarto
 /R/playground.R
+/data-raw/API.R*

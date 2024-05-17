@@ -3,7 +3,7 @@ library(readr)
 library(tidyr)
 
 raw <- readr::read_tsv("data-raw/earthquakes-2024-04-29_16-19-32_+0200.tsv",
-                       col_select = !c(1, contains("Description"), contains("Total")))
+                       col_select = !c(1, contains("Description")))
 
 world <- raw %>%
   filter(if_all(c(Year, Mag, Latitude, Longitude, 'Location Name'), ~!is.na(.))) %>%

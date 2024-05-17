@@ -1,15 +1,14 @@
 library(dplyr)
 library(readr)
-library(tidyr)
+library(stringr)
 
-southamerica <- eq_df %>%
+southamerica <- world %>%
   select(c(`Location Name`, Year, Mo, Dy, Latitude, Longitude, `Total Deaths`, Mag)) %>%
-  filter(str_detect(`Location Name`, "ARGENTINA|CHILE|BRAZIL|
-                                         ECUADOR|PERU|PARAGUAY|
-                                         BOLIVIA|COLOMBIA|VENEZUELA|
-                                         GUYANA")) %>%
-  filter(if_all(c('Total Deaths', Mag), ~!is.na(.)))
+  filter(str_detect(`Location Name`,
+                    "ARGENTINA|BOLIVIA|BRAZIL|CHILE|COLOMBIA|ECUADOR|GUYANA|
+                    PARAGUAY|PERU|URUGUAY|VENEZUELA"
+                    )
+         )
 
 write_csv(southamerica, "data-raw/southamerica.csv")
 save(southamerica, file = "data-raw/southamerica.rda")
-usethis::use_data(mexico, overwrite = TRUE)

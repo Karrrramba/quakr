@@ -25,7 +25,7 @@
 #' @return A layer \code{ggproto} object.
 #'
 #' @importFrom cli cli_abort
-#' @importFrom ggplot2 aes alpha draw_key_text ggplot_build ggproto last_plot layer size_unit
+#' @importFrom ggplot2 aes alpha draw_key_text Geom ggplot_build ggproto last_plot layer size_unit
 #' @importFrom grid gpar gList linesGrob textGrob unit
 #'
 #'
@@ -83,7 +83,7 @@ geom_timeline_label <- function(mapping = NULL,
 #' @usage NULL
 #' @export
 #' @rdname geom_timeline_label
-GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
+GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", ggplot2::Geom,
                         required_aes = c("x", "label"),
                         default_aes = ggplot2::aes(
                           limit_var = NULL,

@@ -20,7 +20,7 @@
 #'
 #' @returns A layer \code{ggproto} object.
 #'
-#' @importFrom ggplot2 aes alpha draw_key_point fill_alpha ggproto layer
+#' @importFrom ggplot2 aes alpha draw_key_point fill_alpha Geom ggproto layer
 #' @importFrom grid gpar gList pointsGrob segmentsGrob unit
 #'
 #' @examples
@@ -70,7 +70,7 @@ geom_timeline <- function(mapping = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
+GeomTimeline <- ggplot2::ggproto("GeomTimeline", ggplot2::Geom,
                                  required_aes = c("x", "xmin", "xmax"),
                                  default_aes = ggplot2::aes(
                                    y = NA,

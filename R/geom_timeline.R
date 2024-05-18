@@ -108,7 +108,7 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", ggplot2::Geom,
                                      gp = grid::gpar(
                                        lwd = first_row$linewidth,
                                        lty = first_row$linetype,
-                                       col = first_row$line_colour
+                                       col = first_row$linecolour
                                      )
                                    )
 

@@ -36,6 +36,7 @@ eq_location_clean <- function(data){
       ) %>%
       dplyr::mutate(
         location = stringr::str_to_title(location),
+        country = stringr::str_to_upper(country),
         dplyr::across(c(location, country), ~gsub('"', '', trimws(.))),
       )
 

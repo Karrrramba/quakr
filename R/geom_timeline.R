@@ -20,7 +20,7 @@
 #'
 #' @returns A layer \code{ggproto} object.
 #'
-#' @importFrom ggplot2 aes alpha fill_alpha ggproto layer
+#' @importFrom ggplot2 aes alpha draw_key_point fill_alpha ggproto layer
 #' @importFrom grid gpar gList pointsGrob segmentsGrob unit
 #'
 #' @examples
@@ -88,7 +88,7 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", Geom,
                                                      "linetype", "linewidth",
                                                      "linecolour"),
 
-                                 draw_key = draw_key_point,
+                                 draw_key = ggplot2::draw_key_point,
 
                                  draw_group = function(data, panel_params, coord, ...) {
 

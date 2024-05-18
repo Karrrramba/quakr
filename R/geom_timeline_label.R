@@ -25,7 +25,7 @@
 #' @return A layer \code{ggproto} object.
 #'
 #' @importFrom cli cli_abort
-#' @importFrom ggplot2 aes alpha ggplot_build ggproto last_plot layer size_unit
+#' @importFrom ggplot2 aes alpha draw_key_text ggplot_build ggproto last_plot layer size_unit
 #' @importFrom grid gpar gList linesGrob textGrob unit
 #'
 #'
@@ -92,7 +92,7 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", Geom,
                           alpha = 1
                         ),
 
-                        draw_key = draw_key_text,
+                        draw_key = ggplot2::draw_key_text,
 
                         draw_group = function(data, panel_params, coord,
                                               rot = 15,

@@ -3,3 +3,4 @@
 ^LICENSE\.md$
 ^R/playground\.R$
 ^data-raw$
+^\.github$

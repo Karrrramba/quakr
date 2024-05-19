@@ -29,9 +29,9 @@
 
 eq_create_label <- function(data) {
 
-  l <- paste(
+  l <- paste0(
       ifelse(!is.na(data$location), paste("<b>Location:</b>", data$location, "<br/>"), ""),
-      ifelse(!is.na(data$mag), paste("<b>Magnitude:</b>", data$mag, "<br />"), ""),
+      ifelse(!is.na(data$mag), paste("<b>Magnitude:</b>", data$mag, "<br/>"), ""),
       ifelse(!is.na(data$total_deaths), paste("<b>Total deaths:</b>", data$total_deaths), "")
       )
   l <- trimws(l)

@@ -13,10 +13,16 @@
 #' @returns A data frame with HTML-formatted label information.
 #'
 #' @examples
-#' #create and use labels in a plot
+#' #create label column
 #' southamerica %>%
 #' filter(country == "CHILE" & year(date) >= 1970) %>%
-#'   mutate(popup_text = eq_create_label(.))
+#'   mutate(popup_text = eq_create_label(.)) %>%
+#'   head()
+#'
+#' # use labels in a plot
+#' southamerica %>%
+#' filter(country == "CHILE" & year(date) >= 1970) %>%
+#'   mutate(popup_text = eq_create_label(.)) %>%
 #'   eq_map(annot_col = "popup_text")
 #'
 #' @export
@@ -26,9 +32,9 @@ eq_create_label <- function(data) {
   l <- paste(
       ifelse(!is.na(data$location), paste("<b>Location:</b>", data$location, "<br/>"), ""),
       ifelse(!is.na(data$mag), paste("<b>Magnitude:</b>", data$mag, "<br />"), ""),
-      ifelse(!is.na(data$total_deaths), paste("<b>Total deaths</b>:", data$total_deaths), "")
+      ifelse(!is.na(data$total_deaths), paste("<b>Total deaths:</b>", data$total_deaths), "")
       )
+  l <- trimws(l)
 
   l
-
 }

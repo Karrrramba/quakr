@@ -15,5 +15,4 @@
 #'   \item{mag}{Primary earthquake magnitude.}
 #'   \item{total_deaths}{Number of deaths from earthquake and its secondary effects.}
 #' }
-#' @export
 "southamerica"

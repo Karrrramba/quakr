@@ -22,6 +22,42 @@ geom_timeline_label(
 )
 }
 \arguments{
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}}. If specified and
+\code{inherit.aes = TRUE} (the default), it is combined with the default mapping
+at the top level of the plot. You must supply \code{mapping} if there is no plot
+mapping.}
+
+\item{data}{The data to be displayed in this layer. There are three
+options:
+
+If \code{NULL}, the default, the data is inherited from the plot
+data as specified in the call to \code{\link[ggplot2:ggplot]{ggplot()}}.
+
+A \code{data.frame}, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+\code{\link[ggplot2:fortify]{fortify()}} for which variables will be created.
+
+A \code{function} will be called with a single argument,
+the plot data. The return value must be a \code{data.frame}, and
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{stat}{The statistical transformation to use on the data for this
+layer, either as a \code{ggproto} \code{Geom} subclass or as a string naming the
+stat stripped of the \code{stat_} prefix (e.g. \code{"count"} rather than
+\code{"stat_count"})}
+
+\item{position}{Position adjustment, either as a string naming the adjustment
+(e.g. \code{"jitter"} to use \code{position_jitter}), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.}
+
+\item{show.legend}{logical. Should this layer be included in the legends?
+\code{NA}, the default, includes if any aesthetics are mapped.
+\code{FALSE} never includes, and \code{TRUE} always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.}
+
 \item{n_max}{An integer value that limits the number of
 labels based on the values mapped to `limit_var`. If not defined all labels
 are displayed. Defaults to `NULL`.}
@@ -32,6 +68,11 @@ values of the `limit_var`. Defaults to `NULL`.}
 
 \item{label_dodge}{Logical toggles vertically alternating orientation of
 labels to reduce overlapping. Defaults to `FALSE`.}
+
+\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+rather than combining with them. This is most useful for helper functions
+that define both data and aesthetics and shouldn't inherit behaviour from
+the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 
 \item{x}{A date vector specifying x values.}
 
@@ -49,9 +90,9 @@ based on max point size otherwise.
  `geom_timeline_label()` understands the following
   aesthetics (required aesthetics are in bold):
   \itemize{\item{**`x`**} \item{**`label`**}
-  \item{`linewidth`} \item{`linetype`} \item{`linecolour`}}
+  \item{`linewidth`} \item{`linetype`} \item{`linecolour`}
   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
-  \item{`stroke`}
+  \item{`stroke`}}
 }
 
 \examples{

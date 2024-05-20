@@ -21,6 +21,7 @@
 #' @param label_dodge Logical toggles vertically alternating orientation of
 #'  labels to reduce overlapping. Defaults to `FALSE`.
 #' @inheritParams ggplot2::GeomText
+#' @inheritParams ggplot2::layer
 #'
 #' @return A layer \code{ggproto} object.
 #'

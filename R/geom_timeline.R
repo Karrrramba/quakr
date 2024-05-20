@@ -17,6 +17,7 @@
 #'   By default one timeline is plotted in the middle of the viewport.
 #' @inheritParams ggplot2::GeomPoint
 #' @inheritParams ggplot2::GeomLine
+#' @inheritParams ggplot2::layer
 #'
 #' @returns A layer \code{ggproto} object.
 #'

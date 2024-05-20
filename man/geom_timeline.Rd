@@ -38,15 +38,15 @@ events or intervals over a continuous time axis.
  `geom_timeline()` understands the following
   aesthetics (required aesthetics are in bold):
   \itemize{\item{**`x`**} \item{**`xmin`**} \item{**`xmax`**}
-  \item{`y`} \item{`linewidth`} \item{`linetype`} \item{`linecolour`}}
+  \item{`y`} \item{`linewidth`} \item{`linetype`} \item{`linecolour`}
   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
-  \item{`stroke`}
+  \item{`stroke`}}
 }
 
 \examples{
 #single timeline without `y` aesthetic
 p <- southamerica \%>\%
-filter(country == "CHILE" & year(date) >= 1970) \%>\%
+ filter(country == "CHILE" & year(date) >= 1970) \%>\%
  ggplot(aes(x = date)))
 
 p + geom_timeline(aes(xmin = min(date), xmax = max(date))

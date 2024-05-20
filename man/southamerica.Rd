@@ -5,7 +5,14 @@
 \alias{southamerica}
 \title{NCEI earthquake data}
 \format{
-
+A data frame with 4163 rows and 7 columns:
+\describe{
+  \item{country, location}{Geopolitical location given as country and state, province, city, or cardinal direction (N, S, W, E).}
+  \item{longitude, latitude}{Location coordinates. Negative values represent locations west of the prime meridian, south of the equator respectively.}
+  \item{date}{Date given as \%Y-\%m-\%d.}
+  \item{mag}{Primary earthquake magnitude.}
+  \item{total_deaths}{Number of deaths from earthquake and its secondary effects.}
+}
 }
 \source{
 <https://www.ngdc.noaa.gov/hazel/view/hazards/earthquake/search>

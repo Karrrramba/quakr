@@ -5,19 +5,21 @@
 #' Transforms the location names to title case.
 #'
 #' @param data A data frame with column names with underscores (`_`) instead of
-#' whitespaces and lower letter case
+#' whitespaces and lower letter case.
 #'
 #' @importFrom dplyr across filter mutate
-#' @importFrom stringr str_to_title
+#' @importFrom stringr str_to_title str_to_upper
 #' @importFrom tidyr separate_longer_delim separate_wider_delim
+#' @importFrom magrittr  %>%
 #'
 #' @returns A data frame.
 #'
 #' @examples
-#' #uses `clean_names()` from the `janitor` package to tidy up column names
-#' southamerica %>%
+#' data(world)
+#' world %>%
 #'   janitor::clean_names(.) %>%
 #'   eq_location_clean() %>%
+#'   dplyr::select(location, country) %>%
 #'   head()
 #'
 #' @export
@@ -26,7 +28,7 @@ eq_location_clean <- function(data){
 
     data <- data %>%
       dplyr::filter(!is.na(location_name)) %>%
-      # tidyr::separate_longer_delim(., location_name, delim = ";") %>%
+      tidyr::separate_longer_delim(., location_name, delim = ";") %>%
       tidyr::separate_wider_delim(., location_name,
                                   names = c("country", "location"),
                                   delim = ": ",

@@ -1,6 +1,6 @@
 Package: quakr
 Type: Package
-Title: Creates Visualizations of Eathquakes
+Title: Creates Visualizations of Earthquakes
 Version: 0.1.0
 Authors@R: 
     person(given = "Michal",

@@ -7,9 +7,9 @@
 #' @section Aesthetics: `geom_timeline_label()` understands the following
 #'   aesthetics (required aesthetics are in bold):
 #'   \itemize{\item{**`x`**} \item{**`label`**}
-#'   \item{`linewidth`} \item{`linetype`} \item{`linecolour`}}
+#'   \item{`linewidth`} \item{`linetype`} \item{`linecolour`}
 #'   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
-#'   \item{`stroke`}
+#'   \item{`stroke`}}
 #' @param x A date vector specifying x values.
 #' @param label A vector specifying the information to be displayed.
 #' @param n_max An integer value that limits the number of
@@ -25,9 +25,8 @@
 #' @return A layer \code{ggproto} object.
 #'
 #' @importFrom cli cli_abort
-#' @importFrom ggplot2 aes alpha draw_key_text Geom ggplot_build ggproto last_plot layer size_unit
+#' @importFrom ggplot2 aes alpha draw_key_text Geom ggplot_build ggproto last_plot layer unit
 #' @importFrom grid gpar gList linesGrob textGrob unit
-#'
 #'
 #' @examples
 #' p <- southamerica %>%
@@ -86,10 +85,11 @@ geom_timeline_label <- function(mapping = NULL,
 GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", ggplot2::Geom,
                         required_aes = c("x", "label"),
                         default_aes = ggplot2::aes(
-                          limit_var = NULL,
+                          limit = NULL,
                           linecolour = "black",
                           textcolour = "black",
-                          alpha = 1
+                          linealpha = 1,
+                          textalpha = 1
                         ),
 
                         draw_key = ggplot2::draw_key_text,
@@ -103,38 +103,48 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", ggplot2::Geom,
 
                           first_row <- data[1, ]
 
-                          if ((!is.null(n_max) && is.numeric(n_max)) && !is.null(first_row$limit)) {
-                            data <- data[order(data$limit_var, decreasing = TRUE), ][1:as.integer(n_max), ]
+                          if(!is.null(n_max) && is.numeric(n_max) && is.null(first_row$limit)) {
+                            cli::cli_abort("{.arg n_max} must be used in conjunction with {.arg limit}.")
                           }
 
+                          if ((!is.null(n_max) && is.numeric(n_max)) && !is.null(first_row$limit)) {
+                            data <- data[order(data$limit, decreasing = TRUE), ][1:as.integer(n_max), ]
+                          } else
+
+
                           size <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size
-                          y_scaler <- ifelse(max(size) == min(size), 0.15, 0.03 * max(size))
+                          y_scaler <- ifelse(max(size) == min(size), 0.1, 0.03 * max(size))
 
                           if (is.null(first_row$y)) {
                             data$y <- 0.5
                           }
 
                           data$yend <- data$y + y_scaler
+                          print("Before adjusting yend:")
+                          print(data$yend)
 
                           if (label_dodge == TRUE) {
                             data$yend[seq(1, nrow(data), 2)] <- data$y[seq(1, nrow(data), 2)] - y_scaler
                           }
-
+                          print("After adjusting yend:")
+                          print(data$yend)
 
                           coords <- coord$transform(data, panel_params)
+
+                          print("yend in coords:")
+                          print(coords$yend)
 
                           line_grobs <- lapply(seq_len(nrow(coords)), function(i) {
                             grid::linesGrob(
                               x = grid::unit(c(coords$x[i], coords$x[i]), "npc"),
                               y = grid::unit(c(coords$y[i], coords$yend[i]), "npc"),
                               gp = grid::gpar(
-                                col = ggplot2::alpha(coords$linecolour[i], coords$alpha[i])
+                                col = ggplot2::alpha(coords$linecolour[i], coords$linealpha[i])
                                 )
                             )
                           })
 
                           lines_tree <- do.call("grobTree", line_grobs)
-
 
                           if (label_dodge == TRUE) {
                             coords$hjust <- ifelse(coords$yend > coords$y, 0, 1)
@@ -144,6 +154,7 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", ggplot2::Geom,
                             coords$vjust = 0
                           }
 
+
                           text_grob <- grid::textGrob(
                             label = coords$label,
                             x = grid::unit(coords$x, "npc"),
@@ -152,8 +163,10 @@ GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", ggplot2::Geom,
                             hjust = coords$hjust,
                             vjust = coords$vjust,
                             gp = grid::gpar(
+                              col = ggplot2::alpha(coords$textcolour, coords$textalpha),
                               fontsize = data$size,
-                              fontfamily = data$family),
+                              fontfamily = data$family
+                              ),
                             check.overlap = check_overlap
                           )
 

@@ -35,11 +35,12 @@
 #' @return A layer \code{ggproto} object.
 #'
 #' @importFrom cli cli_abort
-#' @importFrom ggplot2 aes alpha draw_key_text Geom ggplot_build ggproto last_plot layer unit
+#' @importFrom dplyr filter
+#' @importFrom ggplot2 aes alpha draw_key_text Geom ggplot ggplot_build ggproto last_plot layer unit
 #' @importFrom grid gpar gList linesGrob textGrob unit
+#' @importFrom lubridate year
 #'
 #' @examples
-#' data(southamerica)
 #' p <- southamerica %>%
 #'  filter(country == "CHILE" & year(date) >= 1970) %>%
 #'  ggplot(aes(x = date)) +
@@ -66,7 +67,6 @@ geom_timeline_label <- function(mapping = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           n_max = NULL,
-                          limit_var = NULL,
                           label_dodge = FALSE,
                           check_overlap = FALSE,
                           ...,

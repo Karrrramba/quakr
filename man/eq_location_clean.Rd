@@ -8,7 +8,7 @@ eq_location_clean(data)
 }
 \arguments{
 \item{data}{A data frame with column names with underscores (`_`) instead of
-whitespaces and lower letter case}
+whitespaces and lower letter case.}
 }
 \value{
 A data frame.
@@ -19,10 +19,10 @@ International earthquake events are assigned to each country individually.
 Transforms the location names to title case.
 }
 \examples{
-#uses `clean_names()` from the `janitor` package to tidy up column names
-southamerica \%>\%
+world \%>\%
   janitor::clean_names(.) \%>\%
   eq_location_clean() \%>\%
+  dplyr::select(location, country) \%>\%
   head()
 
 }

@@ -14,16 +14,18 @@
 #'
 #' @returns An interactive leaflet map.
 #'
+#' @importFrom dplyr filter
 #' @importFrom leaflet leaflet addProviderTiles addCircles
+#' @importFrom lubridate year
 #'
 #' @examples
 #' # Plot earthquake events for a single country
 #' southamerica %>%
-#' filter(country == "CHILE" & year(date) >= 1970) %>% %>%
-#'   eq_map(annot_col = "date")
+#'   filter(country == "CHILE" & year(date) >= 1970) %>%
+#'   eq_map(annot_col = "date", scaling_factor = 5)
 #'
 #' # Plot earthquake events for multiple countries
-#' southamerica %>%
+#'southamerica %>%
 #'   filter(year(date) > 2000) %>%
 #'   eq_map(annot_col = "mag", scaling_factor = 5)
 #'

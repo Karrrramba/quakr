@@ -19,8 +19,9 @@ and removes the respective original columns. Observations without complete date
 information are removed.
 }
 \examples{
-southamerica \%>\%
+world \%>\%
   eq_clean_data() \%>\%
+  dplyr::select(date, country, location) \%>\%
   head()
 
 }

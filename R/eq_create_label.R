@@ -15,14 +15,14 @@
 #' @examples
 #' #create label column
 #' southamerica %>%
-#' filter(country == "CHILE" & year(date) >= 1970) %>%
-#'   mutate(popup_text = eq_create_label(.)) %>%
+#'   dplyr::filter(country == "CHILE" & lubridate::year(date) >= 1970) %>%
+#'   dplyr::mutate(popup_text = eq_create_label(.)) %>%
 #'   head()
 #'
 #' # use labels in a plot
 #' southamerica %>%
-#' filter(country == "CHILE" & year(date) >= 1970) %>%
-#'   mutate(popup_text = eq_create_label(.)) %>%
+#'   dplyr::filter(country == "CHILE" & lubridate::year(date) >= 1970) %>%
+#'   dplyr::mutate(popup_text = eq_create_label(.)) %>%
 #'   eq_map(annot_col = "popup_text")
 #'
 #' @export

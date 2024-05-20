@@ -7,15 +7,14 @@
 #' @param data A data frame with column names with underscores (`_`) instead of
 #' whitespaces and lower letter case.
 #'
-#' @importFrom dplyr across filter mutate
+#' @importFrom dplyr across filter mutate select
+#' @importFrom janitor clean_names
 #' @importFrom stringr str_to_title str_to_upper
 #' @importFrom tidyr separate_longer_delim separate_wider_delim
-#' @importFrom magrittr  %>%
 #'
 #' @returns A data frame.
 #'
 #' @examples
-#' data(world)
 #' world %>%
 #'   janitor::clean_names(.) %>%
 #'   eq_location_clean() %>%

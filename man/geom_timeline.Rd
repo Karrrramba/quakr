@@ -86,9 +86,6 @@ events or intervals over a continuous time axis.
 }
 
 \examples{
-# Load the southamerica dataset
-data(southamerica)
-
 # Single timeline without `y` aesthetic
 southamerica \%>\%
   filter(country == "CHILE" & year(date) >= 1970) \%>\%

@@ -26,13 +26,12 @@
 #'
 #' @returns A layer \code{ggproto} object.
 #'
-#' @importFrom ggplot2 aes alpha draw_key_point fill_alpha Geom ggproto layer
+#' @importFrom dplyr filter
+#' @importFrom ggplot2 aes alpha draw_key_point fill_alpha Geom ggplot ggproto layer
 #' @importFrom grid gpar gList pointsGrob segmentsGrob unit
+#' @importFrom lubridate year
 #'
 #' @examples
-#' # Load the southamerica dataset
-#' data(southamerica)
-#'
 #' # Single timeline without `y` aesthetic
 #' southamerica %>%
 #'   filter(country == "CHILE" & year(date) >= 1970) %>%
@@ -65,8 +64,9 @@ geom_timeline <- function(mapping = NULL,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm,
-                  ...
+    params = list(
+      na.rm = na.rm,
+      ...
     )
   )
 }

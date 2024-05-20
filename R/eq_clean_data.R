@@ -12,10 +12,12 @@
 #' @importFrom dplyr filter mutate relocate rename_with select
 #' @importFrom janitor clean_names
 #' @importFrom lubridate make_date
+#' @importFrom magrittr  %>%
 #'
 #' @examples
-#' southamerica %>%
+#' world %>%
 #'   eq_clean_data() %>%
+#'   dplyr::select(date, country, location) %>%
 #'   head()
 #'
 #' @export

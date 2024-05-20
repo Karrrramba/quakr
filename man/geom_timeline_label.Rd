@@ -14,7 +14,6 @@ geom_timeline_label(
   na.rm = FALSE,
   show.legend = NA,
   n_max = NULL,
-  limit_var = NULL,
   label_dodge = FALSE,
   check_overlap = FALSE,
   ...,
@@ -100,7 +99,6 @@ based on max point size otherwise.
 }
 
 \examples{
-data(southamerica)
 p <- southamerica \%>\%
  filter(country == "CHILE" & year(date) >= 1970) \%>\%
  ggplot(aes(x = date)) +

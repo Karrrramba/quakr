@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(QuakR)
+library(quakr)
 
-test_check("QuakR")
+test_check("quakr")

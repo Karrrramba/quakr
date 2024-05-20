@@ -22,4 +22,5 @@
 #'   \item{Houses Destroyed, Total Houses Destroyed}{Number of damaged housing from earthquake and secondary effects, resp.}
 #'   \item{Houses Damaged, Total Houses Damaged}{Number of destroyed housing from earthquake and secondary effects, resp.}
 #' }
+#' @export
 "world"

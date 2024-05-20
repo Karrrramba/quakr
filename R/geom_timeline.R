@@ -5,16 +5,21 @@
 #'
 #' @section Aesthetics: `geom_timeline()` understands the following
 #'   aesthetics (required aesthetics are in bold):
-#'   \itemize{\item{**`x`**} \item{**`xmin`**} \item{**`xmax`**}
-#'   \item{`y`} \item{`linewidth`} \item{`linetype`} \item{`linecolour`}
-#'   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
-#'   \item{`stroke`}}
+#'   \itemize{\item{**`x`**} - A date vector specifying the occurrences of earthquakes.
+#'   \item{**`xmin`**} - A date value specifying the left boundary of the timeline.
+#'   \item{**`xmax`**} - A date value specifying the left boundary of the timeline.
+#'   \item{`y`} - A factor specifying any stratification for multiple timelines.
+#'     By default one timeline is plotted in the middle of the viewport.
+#'   \item{`linewidth`}
+#'   \item{`linetype`}
+#'   \item{`linecolour`}
+#'   \item{`alpha`}
+#'   \item{`colour`}
+#'   \item{`shape`}
+#'   \item{`size`}
+#'   \item{`stroke`}
+#'   }
 #'
-#' @param x A date vector specifying the occurrences of earthquakes.
-#' @param xmin A date value specifying the left boundary of the timeline.
-#' @param xmax A date value specifying the right boundary of the timeline.
-#' @param y A factor specifying any stratification for multiple timelines.
-#'   By default one timeline is plotted in the middle of the viewport.
 #' @inheritParams ggplot2::GeomPoint
 #' @inheritParams ggplot2::GeomLine
 #' @inheritParams ggplot2::layer

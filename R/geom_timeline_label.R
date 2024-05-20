@@ -6,18 +6,24 @@
 #'
 #' @section Aesthetics: `geom_timeline_label()` understands the following
 #'   aesthetics (required aesthetics are in bold):
-#'   \itemize{\item{**`x`**} \item{**`label`**}
-#'   \item{`linewidth`} \item{`linetype`} \item{`linecolour`}
-#'   \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
-#'   \item{`stroke`}}
-#' @param x A date vector specifying x values.
-#' @param label A vector specifying the information to be displayed.
+#'   \itemize{\item{**`x`**} - A date vector specifying x values.
+#'   \item{**`label`**} - A vector specifying the information to be displayed.
+#'   \item{`limit`} - A variable used in conjunction with `n_max` to limit
+#'   the number of displayed labels to the equal `n_max`, based on the highest
+#'   values of the `limit_var`. Defaults to `NULL`.
+#'   \item{`linewidth`}
+#'   \item{`linetype`}
+#'   \item{`linecolour`}
+#'   \item{`alpha`}
+#'   \item{`colour`}
+#'   \item{`shape`}
+#'   \item{`size`}
+#'   \item{`stroke`}
+#'   }
+
 #' @param n_max An integer value that limits the number of
 #'  labels based on the values mapped to `limit_var`. If not defined all labels
 #'  are displayed. Defaults to `NULL`.
-#' @param limit_var A variable used in conjunction with `n_max` to limit
-#'   the number of displayed labels to the equal `n_max`, based on the highest
-#'   values of the `limit_var`. Defaults to `NULL`.
 #' @param label_dodge Logical toggles vertically alternating orientation of
 #'  labels to reduce overlapping. Defaults to `FALSE`.
 #' @inheritParams ggplot2::GeomText

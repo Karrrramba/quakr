@@ -18,14 +18,46 @@ geom_timeline(
 )
 }
 \arguments{
-\item{x}{A date vector specifying the occurrences of earthquakes.}
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}}. If specified and
+\code{inherit.aes = TRUE} (the default), it is combined with the default mapping
+at the top level of the plot. You must supply \code{mapping} if there is no plot
+mapping.}
 
-\item{xmin}{A date value specifying the left boundary of the timeline.}
+\item{data}{The data to be displayed in this layer. There are three
+options:
 
-\item{xmax}{A date value specifying the right boundary of the timeline.}
+If \code{NULL}, the default, the data is inherited from the plot
+data as specified in the call to \code{\link[ggplot2:ggplot]{ggplot()}}.
 
-\item{y}{A factor specifying any stratification for multiple timelines.
-By default one timeline is plotted in the middle of the viewport.}
+A \code{data.frame}, or other object, will override the plot
+data. All objects will be fortified to produce a data frame. See
+\code{\link[ggplot2:fortify]{fortify()}} for which variables will be created.
+
+A \code{function} will be called with a single argument,
+the plot data. The return value must be a \code{data.frame}, and
+will be used as the layer data. A \code{function} can be created
+from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
+
+\item{stat}{The statistical transformation to use on the data for this
+layer, either as a \code{ggproto} \code{Geom} subclass or as a string naming the
+stat stripped of the \code{stat_} prefix (e.g. \code{"count"} rather than
+\code{"stat_count"})}
+
+\item{position}{Position adjustment, either as a string naming the adjustment
+(e.g. \code{"jitter"} to use \code{position_jitter}), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.}
+
+\item{show.legend}{logical. Should this layer be included in the legends?
+\code{NA}, the default, includes if any aesthetics are mapped.
+\code{FALSE} never includes, and \code{TRUE} always includes.
+It can also be a named logical vector to finely select the aesthetics to
+display.}
+
+\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
+rather than combining with them. This is most useful for helper functions
+that define both data and aesthetics and shouldn't inherit behaviour from
+the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 }
 \value{
 A layer \code{ggproto} object.
@@ -37,10 +69,20 @@ events or intervals over a continuous time axis.
 \section{Aesthetics}{
  `geom_timeline()` understands the following
   aesthetics (required aesthetics are in bold):
-  \itemize{\item{**`x`**} \item{**`xmin`**} \item{**`xmax`**}
-  \item{`y`} \item{`linewidth`} \item{`linetype`} \item{`linecolour`}
-  \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
-  \item{`stroke`}}
+  \itemize{\item{**`x`**} - A date vector specifying the occurrences of earthquakes.
+  \item{**`xmin`**} - A date value specifying the left boundary of the timeline.
+  \item{**`xmax`**} - A date value specifying the left boundary of the timeline.
+  \item{`y`} - A factor specifying any stratification for multiple timelines.
+    By default one timeline is plotted in the middle of the viewport.
+  \item{`linewidth`}
+  \item{`linetype`}
+  \item{`linecolour`}
+  \item{`alpha`}
+  \item{`colour`}
+  \item{`shape`}
+  \item{`size`}
+  \item{`stroke`}
+  }
 }
 
 \examples{

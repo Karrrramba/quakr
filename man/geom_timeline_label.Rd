@@ -62,10 +62,6 @@ display.}
 labels based on the values mapped to `limit_var`. If not defined all labels
 are displayed. Defaults to `NULL`.}
 
-\item{limit_var}{A variable used in conjunction with `n_max` to limit
-the number of displayed labels to the equal `n_max`, based on the highest
-values of the `limit_var`. Defaults to `NULL`.}
-
 \item{label_dodge}{Logical toggles vertically alternating orientation of
 labels to reduce overlapping. Defaults to `FALSE`.}
 
@@ -73,10 +69,6 @@ labels to reduce overlapping. Defaults to `FALSE`.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
-
-\item{x}{A date vector specifying x values.}
-
-\item{label}{A vector specifying the information to be displayed.}
 }
 \value{
 A layer \code{ggproto} object.
@@ -89,10 +81,20 @@ based on max point size otherwise.
 \section{Aesthetics}{
  `geom_timeline_label()` understands the following
   aesthetics (required aesthetics are in bold):
-  \itemize{\item{**`x`**} \item{**`label`**}
-  \item{`linewidth`} \item{`linetype`} \item{`linecolour`}
-  \item{`alpha`} \item{`colour`} \item{`shape`} \item{`size`}
-  \item{`stroke`}}
+  \itemize{\item{**`x`**} - A date vector specifying x values.
+  \item{**`label`**} - A vector specifying the information to be displayed.
+  \item{`limit`} - A variable used in conjunction with `n_max` to limit
+  the number of displayed labels to the equal `n_max`, based on the highest
+  values of the `limit_var`. Defaults to `NULL`.
+  \item{`linewidth`}
+  \item{`linetype`}
+  \item{`linecolour`}
+  \item{`alpha`}
+  \item{`colour`}
+  \item{`shape`}
+  \item{`size`}
+  \item{`stroke`}
+  }
 }
 
 \examples{

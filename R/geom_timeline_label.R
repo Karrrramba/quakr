@@ -4,8 +4,10 @@
 #' and the labels is static when no `size` aesthetic is specified and calculated
 #' based on max point size otherwise.
 #'
-#' @section Aesthetics: `geom_timeline_label()` understands the following
+#' @section Aesthetics:
+#'   `geom_timeline_label()` understands the following
 #'   aesthetics (required aesthetics are in bold):
+#'
 #'   \itemize{\item{**`x`**} - A date vector specifying x values.
 #'   \item{**`label`**} - A vector specifying the information to be displayed.
 #'   \item{`limit`} - A variable used in conjunction with `n_max` to limit
@@ -20,12 +22,13 @@
 #'   \item{`size`}
 #'   \item{`stroke`}
 #'   }
-
+#'
 #' @param n_max An integer value that limits the number of
-#'  labels based on the values mapped to `limit_var`. If not defined all labels
+#'  labels based on the values mapped to `limit`. If not defined all labels
 #'  are displayed. Defaults to `NULL`.
 #' @param label_dodge Logical toggles vertically alternating orientation of
 #'  labels to reduce overlapping. Defaults to `FALSE`.
+#'
 #' @inheritParams ggplot2::GeomText
 #' @inheritParams ggplot2::layer
 #'
@@ -36,8 +39,9 @@
 #' @importFrom grid gpar gList linesGrob textGrob unit
 #'
 #' @examples
+#' data(southamerica)
 #' p <- southamerica %>%
-#' filter(country == "CHILE" & year(date) >= 1970) %>%
+#'  filter(country == "CHILE" & year(date) >= 1970) %>%
 #'  ggplot(aes(x = date)) +
 #'  geom_timeline(aes(
 #'   xmin = min(date),

@@ -59,7 +59,7 @@ It can also be a named logical vector to finely select the aesthetics to
 display.}
 
 \item{n_max}{An integer value that limits the number of
-labels based on the values mapped to `limit_var`. If not defined all labels
+labels based on the values mapped to `limit`. If not defined all labels
 are displayed. Defaults to `NULL`.}
 
 \item{label_dodge}{Logical toggles vertically alternating orientation of
@@ -79,8 +79,10 @@ and the labels is static when no `size` aesthetic is specified and calculated
 based on max point size otherwise.
 }
 \section{Aesthetics}{
- `geom_timeline_label()` understands the following
+
+  `geom_timeline_label()` understands the following
   aesthetics (required aesthetics are in bold):
+
   \itemize{\item{**`x`**} - A date vector specifying x values.
   \item{**`label`**} - A vector specifying the information to be displayed.
   \item{`limit`} - A variable used in conjunction with `n_max` to limit
@@ -98,8 +100,9 @@ based on max point size otherwise.
 }
 
 \examples{
+data(southamerica)
 p <- southamerica \%>\%
-filter(country == "CHILE" & year(date) >= 1970) \%>\%
+ filter(country == "CHILE" & year(date) >= 1970) \%>\%
  ggplot(aes(x = date)) +
  geom_timeline(aes(
   xmin = min(date),

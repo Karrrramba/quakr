@@ -30,19 +30,20 @@
 #' @importFrom grid gpar gList pointsGrob segmentsGrob unit
 #'
 #' @examples
-#' #single timeline without `y` aesthetic
-#' p <- southamerica %>%
-#'  filter(country == "CHILE" & year(date) >= 1970) %>%
-#'  ggplot(aes(x = date)))
+#' # Load the southamerica dataset
+#' data(southamerica)
 #'
-#' p + geom_timeline(aes(xmin = min(date), xmax = max(date))
+#' # Single timeline without `y` aesthetic
+#' southamerica %>%
+#'   filter(country == "CHILE" & year(date) >= 1970) %>%
+#'   ggplot(aes(x = date)) +
+#'   geom_timeline(aes(xmin = min(date), xmax = max(date)))
 #'
-#' #multiple timelines
-#' s <- southamerica %>%
-#'  filter(lubridate::year(date) >= 1990) %>%
-#'  ggplot(aes(x = date, y = country))
-#'
-#' s + geom_timeline(aes(xmin = min(date), xmax = max(date))
+#' # Multiple timelines
+#' southamerica %>%
+#'   filter(year(date) >= 1990) %>%
+#'   ggplot(aes(x = date, y = country)) +
+#'   geom_timeline(aes(xmin = min(date), xmax = max(date)))
 #'
 #' @export
 

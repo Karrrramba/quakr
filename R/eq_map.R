@@ -12,7 +12,7 @@
 #' @param scaling_factor A numeric value which scales the point size.
 #'   Defaults to 1.
 #'
-#' @retrurns An interactive leaflet map.
+#' @returns An interactive leaflet map.
 #'
 #' @importFrom leaflet leaflet addProviderTiles addCircles
 #'

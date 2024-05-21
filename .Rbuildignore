@@ -1,7 +1,10 @@
-^.*\.Rproj$
-^\.Rproj\.user$
-^LICENSE\.md$
-^R/playground\.R$
+^codecov\.yml$
 ^data-raw$
 ^\.github$
+^LICENSE\.md$
+^_pkgdown\.yml$
+^pkgdown$
+^R/playground\.R$
+^.*\.Rproj$
+^\.Rproj\.user$
 ^README\.qmd$

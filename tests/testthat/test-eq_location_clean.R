@@ -1,3 +1,5 @@
+#' @importFrom tibble tibble
+
 test_that("eq_location_clean splits country and location", {
   data <- tibble::tibble(location_name = c("USA: California", "JAPAN: Tokyo", NA, "CANADA: Quebec"))
   expected <- tibble::tibble(country = c("USA", "JAPAN", "CANADA"),

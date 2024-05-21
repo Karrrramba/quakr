@@ -8,14 +8,10 @@ Authors@R:
            role = c("aut", "cre"),
            email = "michael.rackiewicz@gmail.com")
 Description: Allows data processing and visualization of NCEI earthquake data 
-    via custom 'ggplot2' geoms as well as interactive geospatial plots 
-    using 'leaflet'.
+    via custom 'ggplot2' geoms as well as interactive geospatial plots.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Suggests: 
-    testthat (>= 3.0.0),
-    tibble
 Config/testthat/edition: 3
 URL: https://github.com/Karrrramba/quakr
 BugReports: https://github.com/Karrrramba/quakr/issues
@@ -30,6 +26,13 @@ Imports:
     magrittr,
     stringr,
     tidyr
+Suggests: 
+    knitr,
+    quarto,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    tibble
 RoxygenNote: 7.3.1
 Depends: 
     R (>= 2.10)
+VignetteBuilder: quarto

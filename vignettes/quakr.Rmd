@@ -1,0 +1,121 @@
+---
+title: "Introduction to quakr"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{quakr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+The quakr package provides tools for analyzing and visualizing earthquake data. This vignette demonstrates the basic functionality of the package, including data loading, cleaning, and visualization.
+
+```{r setup}
+#| echo: false
+library(quakr)
+```
+
+# Loading Data
+
+While the package is designed to process raw data from the NCEI database (doi: 10.7289/V5TD9V7K), it also includes two datasets: `world` and `southamerica`. \
+The `world` dataset contains the whole dataset (as of 05/2024), which has been filtered for complete observations for:
+
+-   geographic and geopolitical location (country, state/city/area, longitude and latitude)
+
+-   magnitude
+
+-   total deaths
+
+This ensures that the the `quakr` functions can be used on this data. Additional column entries were left as-is.
+
+```{r}
+#| echo: false
+data("world", package = "quakr")
+head(world)
+```
+
+The `southamerica` dataset is a reduced version containing only complete earthquake observations in South America. Additionally, it has been reduced to contain only minimal information to demonstrate hwo the package works. Let's load and inspect this dataset.
+
+data("world", package = "quakr")
+
+```{r}
+#| echo: false
+data("southamerica", package = "quakr")
+head(southamerica)
+```
+
+# Data Cleaning
+
+One of the key functions in **`quakr`** is **`eq_lean_data()`**, which cleans column names and separates country and location information.
+
+```{r}
+cleaned_data <- eq_clean_data(world)
+head(cleaned_data)
+```
+
+# Visualizing Earthquake Data
+
+The package provides several functions for visualizing earthquake data. One of the primary visualization functions is **`geom_timeline`**, which plots earthquake events on a timeline.
+
+### Basic Timeline Plot
+
+```{r}
+# Filter the data for Chilean earthquakes since 1970
+chile_data <- southamerica %>%
+  filter(country == "CHILE" & lubridate::year(date) >= 1970)
+
+# Create a basic timeline plot
+ggplot(chile_data, aes(x = date)) +
+  geom_timeline(aes(xmin = min(date), xmax = max(date))) +
+  theme_minimal()
+```
+
+### **Adding Labels to the Timeline**
+
+The **`geom_timeline_label`** function can be used to add labels to the timeline plot, making it easier to identify significant events.\\
+
+```{r}
+ggplot(chile_data, aes(x = date)) +
+  geom_timeline(aes(xmin = min(date), xmax = max(date))) +
+  geom_timeline_label(aes(label = location), label_dodge = TRUE)
+```
+
+### **Limiting the Number of Labels**
+
+To avoid overcrowding the plot, you can limit the number of labels displayed based on earthquake magnitude.
+
+```{r}
+ggplot(chile_data, aes(x = date)) +
+  geom_timeline(aes(xmin = min(date), xmax = max(date))) +
+  geom_timeline_label(aes(label = mag, limit = mag), n_max = 3)
+```
+
+## Interactive Maps
+
+The **`quakr`** package also supports creating interactive maps using **`leaflet`**.
+
+### Basic Map
+
+```{r}
+# Adjust point size with the `scaling_factor` parameter
+map <- eq_map(cleaned_data, annot_col = "date", scaling_factor = 5)
+map
+```
+
+### Adding Labels to Maps
+
+You can add more information to the interactive labels via the `eq_create_label()` function.
+
+```{r}
+chile_data %>% 
+  mutate(label = eq_create_label(.)) %>% 
+  eq_map(annot_col = "label", scaling_factor = 5)
+```

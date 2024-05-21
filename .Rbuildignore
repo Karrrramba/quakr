@@ -4,3 +4,4 @@
 ^R/playground\.R$
 ^data-raw$
 ^\.github$
+^README\.qmd$

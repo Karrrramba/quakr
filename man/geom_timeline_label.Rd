@@ -11,7 +11,6 @@ geom_timeline_label(
   data = NULL,
   stat = "identity",
   position = "identity",
-  na.rm = FALSE,
   show.legend = NA,
   n_max = NULL,
   label_dodge = FALSE,
@@ -64,6 +63,27 @@ are displayed. Defaults to `NULL`.}
 \item{label_dodge}{Logical toggles vertically alternating orientation of
 labels to reduce overlapping. Defaults to `FALSE`.}
 
+\item{check_overlap}{If `TRUE`, text that overlaps previous text in the
+same layer will not be plotted. `check_overlap` happens at draw time and in
+the order of the data. Therefore data should be arranged by the label
+column before calling `geom_timeline_label()`. Defaults to `FALSE`.}
+
+\item{...}{
+  Arguments passed on to \code{\link[ggplot2:layer]{ggplot2::layer}}
+  \describe{
+    \item{\code{geom}}{The geometric object to use to display the data, either as a
+\code{ggproto} \code{Geom} subclass or as a string naming the geom stripped of the
+\code{geom_} prefix (e.g. \code{"point"} rather than \code{"geom_point"})}
+    \item{\code{params}}{Additional parameters to the \code{geom} and \code{stat}.}
+    \item{\code{check.aes,check.param}}{If \code{TRUE}, the default, will check that
+supplied parameters and aesthetics are understood by the \code{geom} or
+\code{stat}. Use \code{FALSE} to suppress the checks.}
+    \item{\code{key_glyph}}{A legend key drawing function or a string providing the
+function name minus the \code{draw_key_} prefix. See \link[ggplot2]{draw_key} for details.}
+    \item{\code{layer_class}}{The type of layer object to be constructed. This is
+intended for ggplot2 internal use only.}
+  }}
+
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
@@ -93,20 +113,19 @@ based on max point size otherwise.
   \item{`alpha`}
   \item{`colour`}
   \item{`shape`}
-  \item{`size`}
+  \item{`fontsize`}
   \item{`stroke`}
   }
 }
 
 \examples{
+library(ggplot2)
+library(dplyr)
+
 p <- southamerica \%>\%
- filter(country == "CHILE" & year(date) >= 1970) \%>\%
+ filter(country == "CHILE" & lubridate::year(date) >= 1970) \%>\%
  ggplot(aes(x = date)) +
- geom_timeline(aes(
-  xmin = min(date),
-  xmax = max(date)
-  )
- )
+ geom_timeline(aes(xmin = min(date),xmax = max(date)))
 
 p + geom_timeline_label(aes(label = location))
 
@@ -115,7 +134,7 @@ p + geom_timeline_label(aes(label = location), label_dodge = TRUE)
 
 #limit number of displayed labels based on earthquake magnitude
 p + geom_timeline_label(aes(label = mag))
-p + geom_timeline_label(aes(label = mag, limit_var = mag), n_max = 3)
+#p + geom_timeline_label(aes(label = mag, limit = mag), n_max = 3)
 
 }
 \keyword{datasets}

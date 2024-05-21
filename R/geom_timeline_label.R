@@ -19,7 +19,7 @@
 #'   \item{`alpha`}
 #'   \item{`colour`}
 #'   \item{`shape`}
-#'   \item{`size`}
+#'   \item{`fontsize`}
 #'   \item{`stroke`}
 #'   }
 #'
@@ -28,27 +28,31 @@
 #'  are displayed. Defaults to `NULL`.
 #' @param label_dodge Logical toggles vertically alternating orientation of
 #'  labels to reduce overlapping. Defaults to `FALSE`.
+#' @param check_overlap If `TRUE`, text that overlaps previous text in the
+#'  same layer will not be plotted. `check_overlap` happens at draw time and in
+#'  the order of the data. Therefore data should be arranged by the label
+#'  column before calling `geom_timeline_label()`. Defaults to `FALSE`.
 #'
 #' @inheritParams ggplot2::GeomText
 #' @inheritParams ggplot2::layer
+#' @inheritDotParams ggplot2::layer
 #'
 #' @return A layer \code{ggproto} object.
 #'
 #' @importFrom cli cli_abort
 #' @importFrom dplyr filter
 #' @importFrom ggplot2 aes alpha draw_key_text Geom ggplot ggplot_build ggproto last_plot layer unit
-#' @importFrom grid gpar gList linesGrob textGrob unit
+#' @importFrom grid gpar gList grobTree linesGrob textGrob unit
 #' @importFrom lubridate year
 #'
 #' @examples
+#' library(ggplot2)
+#' library(dplyr)
+#'
 #' p <- southamerica %>%
-#'  filter(country == "CHILE" & year(date) >= 1970) %>%
+#'  filter(country == "CHILE" & lubridate::year(date) >= 1970) %>%
 #'  ggplot(aes(x = date)) +
-#'  geom_timeline(aes(
-#'   xmin = min(date),
-#'   xmax = max(date)
-#'   )
-#'  )
+#'  geom_timeline(aes(xmin = min(date),xmax = max(date)))
 #'
 #' p + geom_timeline_label(aes(label = location))
 #'
@@ -57,34 +61,34 @@
 #'
 #' #limit number of displayed labels based on earthquake magnitude
 #' p + geom_timeline_label(aes(label = mag))
-#' p + geom_timeline_label(aes(label = mag, limit_var = mag), n_max = 3)
+#' #p + geom_timeline_label(aes(label = mag, limit = mag), n_max = 3)
 #'
 #' @export
-geom_timeline_label <- function(mapping = NULL,
-                          data = NULL,
-                          stat = "identity",
-                          position = "identity",
-                          na.rm = FALSE,
-                          show.legend = NA,
-                          n_max = NULL,
-                          label_dodge = FALSE,
-                          check_overlap = FALSE,
-                          ...,
-                          inherit.aes = TRUE)
+geom_timeline_label <- function(
+    mapping       = NULL,
+    data          = NULL,
+    stat          = "identity",
+    position      = "identity",
+    show.legend   = NA,
+    n_max         = NULL,
+    label_dodge   = FALSE,
+    check_overlap = FALSE,
+    ...,
+    inherit.aes   = TRUE)
   {
     ggplot2::layer(
-      geom = GeomTimelineLabel,
-      mapping = mapping,
-      data = data,
-      stat = stat,
-      position = position,
+      geom        = GeomTimelineLabel,
+      mapping     = mapping,
+      data        = data,
+      stat        = stat,
+      position    = position,
       show.legend = show.legend,
       inherit.aes = inherit.aes,
-      params = list(na.rm = na.rm,
-                    check_overlap = check_overlap,
-                    n_max = n_max,
-                    label_dodge = label_dodge,
-                    ...)
+      param       = list(
+        check_overlap = check_overlap,
+        n_max         = n_max,
+        label_dodge   = label_dodge,
+        ...)
     )
 }
 # ggproto ------------------------------------------------------
@@ -93,94 +97,93 @@ geom_timeline_label <- function(mapping = NULL,
 #' @usage NULL
 #' @export
 #' @rdname geom_timeline_label
-GeomTimelineLabel <- ggplot2::ggproto("GeomTimelineLabel", ggplot2::Geom,
-                        required_aes = c("x", "label"),
-                        default_aes = ggplot2::aes(
-                          limit = NULL,
-                          linecolour = "black",
-                          textcolour = "black",
-                          linealpha = 1,
-                          textalpha = 1
-                        ),
+GeomTimelineLabel <- ggplot2::ggproto(
+  "GeomTimelineLabel",
+  ggplot2::Geom,
+  required_aes = c("x", "label"),
+  default_aes = ggplot2::aes(
+  limit = NULL,
+  linecolour = "black",
+  textcolour = "black",
+  fontsize = 1,
+  linealpha = 1,
+  textalpha = 1
+  ),
 
-                        draw_key = ggplot2::draw_key_text,
+  non_missing_aes = "size",
 
-                        draw_group = function(data, panel_params, coord,
-                                              rot = 15,
-                                              check_overlap = FALSE,
-                                              n_max = NULL,
-                                              label_dodge = FALSE
-                                              ) {
+  draw_key = ggplot2::draw_key_text,
 
-                          first_row <- data[1, ]
+  draw_group = function(data,
+                        panel_params,
+                        coord,
+                        rot = 15,
+                        check_overlap = FALSE,
+                        n_max = NULL,
+                        label_dodge = FALSE
+  ) {
 
-                          if(!is.null(n_max) && is.numeric(n_max) && is.null(first_row$limit)) {
-                            cli::cli_abort("{.arg n_max} must be used in conjunction with {.arg limit}.")
-                          }
+    first_row <- data[1, ]
 
-                          if ((!is.null(n_max) && is.numeric(n_max)) && !is.null(first_row$limit)) {
-                            data <- data[order(data$limit, decreasing = TRUE), ][1:as.integer(n_max), ]
-                          } else
+    if(!is.null(n_max) && is.numeric(n_max) && is.null(first_row$limit)) {
+      cli::cli_abort("{.arg n_max} must be used in conjunction with {.arg limit}.")
+    }
 
+    if ((!is.null(n_max) && is.numeric(n_max)) && !is.null(first_row$limit)) {
+      data <- data[order(data$limit, decreasing = TRUE), ][1:as.integer(n_max), ]
+    } else
 
-                          size <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size
-                          y_scaler <- ifelse(max(size) == min(size), 0.1, 0.03 * max(size))
+    point_size <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size
+    y_scaler <- ifelse(max(point_size) == min(point_size), 0.1, 0.03 * max(point_size))
 
-                          if (is.null(first_row$y)) {
-                            data$y <- 0.5
-                          }
+    if (is.null(first_row$y)) {
+      data$y <- 0.5
+    }
 
-                          data$yend <- data$y + y_scaler
-                          print("Before adjusting yend:")
-                          print(data$yend)
+    data$yend <- data$y + y_scaler
 
-                          if (label_dodge == TRUE) {
-                            data$yend[seq(1, nrow(data), 2)] <- data$y[seq(1, nrow(data), 2)] - y_scaler
-                          }
-                          print("After adjusting yend:")
-                          print(data$yend)
+    if (label_dodge == TRUE) {
+      data$yend[seq(1, nrow(data), 2)] <- data$y[seq(1, nrow(data), 2)] - y_scaler
+    }
 
-                          coords <- coord$transform(data, panel_params)
+    coords <- coord$transform(data, panel_params)
 
-                          print("yend in coords:")
-                          print(coords$yend)
+    line_grobs <- lapply(seq_len(nrow(coords)), function(i) {
+      grid::linesGrob(
+         x = grid::unit(c(coords$x[i], coords$x[i]), "npc"),
+         y = grid::unit(c(coords$y[i], coords$yend[i]), "npc"),
+         gp = grid::gpar(
+           col = ggplot2::alpha(coords$linecolour[i], coords$linealpha[i])
+         )
+      )
+     }
+    )
 
-                          line_grobs <- lapply(seq_len(nrow(coords)), function(i) {
-                            grid::linesGrob(
-                              x = grid::unit(c(coords$x[i], coords$x[i]), "npc"),
-                              y = grid::unit(c(coords$y[i], coords$yend[i]), "npc"),
-                              gp = grid::gpar(
-                                col = ggplot2::alpha(coords$linecolour[i], coords$linealpha[i])
-                                )
-                            )
-                          })
+    lines_tree <- do.call("grobTree", line_grobs)
 
-                          lines_tree <- do.call("grobTree", line_grobs)
+    if (label_dodge == TRUE) {
+      coords$hjust <- ifelse(coords$yend > coords$y, 0, 1)
+      coords$vjust <- ifelse(coords$yend > coords$y, 0, 1)
+    } else {
+      coords$hjust = 0
+      coords$vjust = 0
+    }
 
-                          if (label_dodge == TRUE) {
-                            coords$hjust <- ifelse(coords$yend > coords$y, 0, 1)
-                            coords$vjust <- ifelse(coords$yend > coords$y, 0, 1)
-                          } else {
-                            coords$hjust = 0
-                            coords$vjust = 0
-                          }
+    text_grob <- grid::textGrob(
+      label = coords$label,
+      x = grid::unit(coords$x, "npc"),
+      y = grid::unit(coords$yend, "npc"),
+      rot = rot,
+      hjust = coords$hjust,
+      vjust = coords$vjust,
+      gp = grid::gpar(
+        col = ggplot2::alpha(coords$textcolour, coords$textalpha),
+        fontsize = data$fontsize,
+        fontfamily = data$family
+      ),
+      check.overlap = check_overlap
+     )
 
-
-                          text_grob <- grid::textGrob(
-                            label = coords$label,
-                            x = grid::unit(coords$x, "npc"),
-                            y = grid::unit(coords$yend, "npc"),
-                            rot = rot,
-                            hjust = coords$hjust,
-                            vjust = coords$vjust,
-                            gp = grid::gpar(
-                              col = ggplot2::alpha(coords$textcolour, coords$textalpha),
-                              fontsize = data$size,
-                              fontfamily = data$family
-                              ),
-                            check.overlap = check_overlap
-                          )
-
-                          grid::gList(lines_tree, text_grob)
-                        }
+     grid::gList(lines_tree, text_grob)
+   }
 )

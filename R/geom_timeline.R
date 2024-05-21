@@ -20,9 +20,10 @@
 #'   \item{`stroke`}
 #'   }
 #'
-#' @inheritParams ggplot2::GeomPoint
-#' @inheritParams ggplot2::GeomLine
+#' @inheritDotParams ggplot2::layer
 #' @inheritParams ggplot2::layer
+#' @inheritParams ggplot2::GeomLine
+#' @inheritParams ggplot2::GeomPoint
 #'
 #' @returns A layer \code{ggproto} object.
 #'
@@ -32,40 +33,41 @@
 #' @importFrom lubridate year
 #'
 #' @examples
+#' library(ggplot2)
+#' library(dplyr)
+#'
 #' # Single timeline without `y` aesthetic
 #' southamerica %>%
-#'   filter(country == "CHILE" & year(date) >= 1970) %>%
+#'   filter(country == "CHILE" & lubridate::year(date) >= 1970) %>%
 #'   ggplot(aes(x = date)) +
 #'   geom_timeline(aes(xmin = min(date), xmax = max(date)))
 #'
 #' # Multiple timelines
 #' southamerica %>%
-#'   filter(year(date) >= 1990) %>%
+#'   filter(lubridate::year(date) >= 1990) %>%
 #'   ggplot(aes(x = date, y = country)) +
 #'   geom_timeline(aes(xmin = min(date), xmax = max(date)))
 #'
 #' @export
 
-geom_timeline <- function(mapping = NULL,
-                          data = NULL,
-                          stat = "identity",
-                          position = "identity",
-                          na.rm = FALSE,
-                          show.legend = NA,
-                          inherit.aes = TRUE,
-                          ...
-                          ) {
-
+geom_timeline <- function(
+    mapping     = NULL,
+    data        = NULL,
+    stat        = "identity",
+    position    = "identity",
+    show.legend = NA,
+    inherit.aes = TRUE,
+    ...
+) {
   ggplot2::layer(
-    geom = GeomTimeline,
-    mapping = mapping,
-    data = data,
-    stat = stat,
-    position = position,
+    geom        = GeomTimeline,
+    mapping     = mapping,
+    data        = data,
+    stat        = stat,
+    position    = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
+    params      = list(
       ...
     )
   )
@@ -97,7 +99,7 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", ggplot2::Geom,
 
                                  draw_key = ggplot2::draw_key_point,
 
-                                 draw_group = function(data, panel_params, coord, ...) {
+                                 draw_group = function(data, panel_params, coord) {
 
                                    first_row <- data[1, ]
 

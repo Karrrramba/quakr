@@ -11,7 +11,6 @@ geom_timeline(
   data = NULL,
   stat = "identity",
   position = "identity",
-  na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE,
   ...
@@ -58,6 +57,22 @@ display.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+
+\item{...}{
+  Arguments passed on to \code{\link[ggplot2:layer]{ggplot2::layer}}
+  \describe{
+    \item{\code{geom}}{The geometric object to use to display the data, either as a
+\code{ggproto} \code{Geom} subclass or as a string naming the geom stripped of the
+\code{geom_} prefix (e.g. \code{"point"} rather than \code{"geom_point"})}
+    \item{\code{params}}{Additional parameters to the \code{geom} and \code{stat}.}
+    \item{\code{check.aes,check.param}}{If \code{TRUE}, the default, will check that
+supplied parameters and aesthetics are understood by the \code{geom} or
+\code{stat}. Use \code{FALSE} to suppress the checks.}
+    \item{\code{key_glyph}}{A legend key drawing function or a string providing the
+function name minus the \code{draw_key_} prefix. See \link[ggplot2]{draw_key} for details.}
+    \item{\code{layer_class}}{The type of layer object to be constructed. This is
+intended for ggplot2 internal use only.}
+  }}
 }
 \value{
 A layer \code{ggproto} object.
@@ -86,15 +101,18 @@ events or intervals over a continuous time axis.
 }
 
 \examples{
+library(ggplot2)
+library(dplyr)
+
 # Single timeline without `y` aesthetic
 southamerica \%>\%
-  filter(country == "CHILE" & year(date) >= 1970) \%>\%
+  filter(country == "CHILE" & lubridate::year(date) >= 1970) \%>\%
   ggplot(aes(x = date)) +
   geom_timeline(aes(xmin = min(date), xmax = max(date)))
 
 # Multiple timelines
 southamerica \%>\%
-  filter(year(date) >= 1990) \%>\%
+  filter(lubridate::year(date) >= 1990) \%>\%
   ggplot(aes(x = date, y = country)) +
   geom_timeline(aes(xmin = min(date), xmax = max(date)))
 

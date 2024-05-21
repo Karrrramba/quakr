@@ -21,16 +21,17 @@ adequately small. The labels do not show missing values. Instead, the respective
 information is omitted.
 }
 \examples{
+library(dplyr)
+
 #create label column
 southamerica \%>\%
-  dplyr::filter(country == "CHILE" & lubridate::year(date) >= 1970) \%>\%
-  dplyr::mutate(popup_text = eq_create_label(.)) \%>\%
+  mutate(popup_text = eq_create_label(.)) \%>\%
   head()
 
 # use labels in a plot
 southamerica \%>\%
-  dplyr::filter(country == "CHILE" & lubridate::year(date) >= 1970) \%>\%
-  dplyr::mutate(popup_text = eq_create_label(.)) \%>\%
+  filter(country == "CHILE" & lubridate::year(date) >= 1970) \%>\%
+  mutate(popup_text = eq_create_label(.)) \%>\%
   eq_map(annot_col = "popup_text")
 
 }

@@ -28,7 +28,7 @@
 #' @returns A layer \code{ggproto} object.
 #'
 #' @importFrom dplyr filter
-#' @importFrom ggplot2 aes alpha draw_key_point fill_alpha Geom ggplot ggproto layer
+#' @importFrom ggplot2 aes alpha draw_key_point fill_alpha Geom ggplot ggproto labs layer theme theme_minimal()
 #' @importFrom grid gpar gList pointsGrob segmentsGrob unit
 #' @importFrom lubridate year
 #'
@@ -49,7 +49,6 @@
 #'   geom_timeline(aes(xmin = min(date), xmax = max(date)))
 #'
 #' @export
-
 geom_timeline <- function(
     mapping     = NULL,
     data        = NULL,
@@ -87,7 +86,7 @@ GeomTimeline <- ggplot2::ggproto("GeomTimeline", ggplot2::Geom,
                                    linewidth = 0.5,
                                    linecolour = "black",
                                    colour = "black",
-                                   size = 1.75,
+                                   size = 3,
                                    alpha = 0.25,
                                    shape = 19,
                                    fill = NA

@@ -41,7 +41,7 @@
 #'
 #' @importFrom cli cli_abort
 #' @importFrom dplyr filter
-#' @importFrom ggplot2 aes alpha draw_key_text Geom ggplot ggplot_build ggproto last_plot layer unit
+#' @importFrom ggplot2 aes alpha draw_key_text Geom ggplot ggplot_build ggproto last_plot labs layer theme theme_minimal() unit
 #' @importFrom grid gpar gList grobTree linesGrob textGrob unit
 #' @importFrom lubridate year
 #'
@@ -102,15 +102,13 @@ GeomTimelineLabel <- ggplot2::ggproto(
   ggplot2::Geom,
   required_aes = c("x", "label"),
   default_aes = ggplot2::aes(
-  limit = NULL,
-  linecolour = "black",
-  textcolour = "black",
-  fontsize = 1,
-  linealpha = 1,
-  textalpha = 1
+    limit = NULL,
+    linecolour = "lightgrey",
+    linealpha = 0.2,
+    fontsize = 3,
+    textcolour = "black",
+    textalpha = 1
   ),
-
-  non_missing_aes = "size",
 
   draw_key = ggplot2::draw_key_text,
 
@@ -134,6 +132,8 @@ GeomTimelineLabel <- ggplot2::ggproto(
     } else
 
     point_size <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size
+    # print(ggplot2::ggplot_build(ggplot2::last_plot())$data)
+    print(ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size)
     y_scaler <- ifelse(max(point_size) == min(point_size), 0.1, 0.03 * max(point_size))
 
     if (is.null(first_row$y)) {
@@ -187,3 +187,4 @@ GeomTimelineLabel <- ggplot2::ggproto(
      grid::gList(lines_tree, text_grob)
    }
 )
+

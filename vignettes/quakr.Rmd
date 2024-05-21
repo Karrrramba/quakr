@@ -74,18 +74,52 @@ chile_data <- southamerica %>%
 
 # Create a basic timeline plot
 ggplot(chile_data, aes(x = date)) +
-  geom_timeline(aes(xmin = min(date), xmax = max(date))) +
-  theme_minimal()
+  geom_timeline(aes(xmin = min(date), xmax = max(date))) 
+  
 ```
 
 ### **Adding Labels to the Timeline**
 
-The **`geom_timeline_label`** function can be used to add labels to the timeline plot, making it easier to identify significant events.\\
+The **`geom_timeline_label`** function can be used to add labels to the timeline plot, making it easier to identify significant events.
 
 ```{r}
 ggplot(chile_data, aes(x = date)) +
-  geom_timeline(aes(xmin = min(date), xmax = max(date))) +
-  geom_timeline_label(aes(label = location), label_dodge = TRUE)
+  geom_timeline(aes(xmin = min(date), xmax = max(date), 
+                    size = mag, col = total_deaths)) +
+  geom_timeline_label(aes(label = location)) +
+  theme_minimal() +
+  labs(x = "Date",
+       size = "Richter Scale Magnitude",
+       col = "Total Deaths") +
+  theme(legend.position = "bottom")
+```
+
+### Using Alternating Labels
+
+Additional to `check_overlap` , which reduces overplotting of labels by blocking the text from being displayed, the `label_dodge` parameter uses alternating vertical orientation of text labels.
+
+```{r}
+ggplot(chile_data, aes(x = date)) +
+  geom_timeline(aes(xmin = min(date), xmax = max(date), 
+                    size = mag, col = total_deaths)) +
+  geom_timeline_label(aes(label = location), check_overlap = TRUE) +
+  theme_minimal() +
+  labs(x = "Date",
+       size = "Richter Scale Magnitude",
+       col = "Total Deaths") +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+ggplot(chile_data, aes(x = date)) +
+  geom_timeline(aes(xmin = min(date), xmax = max(date), 
+                    size = mag, col = total_deaths)) +
+  geom_timeline_label(aes(label = location), label_dodge = TRUE) +
+  theme_minimal() +
+  labs(x = "Date",
+       size = "Richter Scale Magnitude",
+       col = "Total Deaths") +
+  theme(legend.position = "bottom")
 ```
 
 ### **Limiting the Number of Labels**
@@ -95,7 +129,12 @@ To avoid overcrowding the plot, you can limit the number of labels displayed bas
 ```{r}
 ggplot(chile_data, aes(x = date)) +
   geom_timeline(aes(xmin = min(date), xmax = max(date))) +
-  geom_timeline_label(aes(label = mag, limit = mag), n_max = 3)
+  geom_timeline_label(aes(label = mag, limit = mag), n_max = 3) +
+  theme_minimal() +
+  labs(x = "Date",
+       size = "Richter Scale Magnitude",
+       col = "Total Deaths") +
+  theme(legend.position = "bottom")
 ```
 
 ## Interactive Maps

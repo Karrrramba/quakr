@@ -28,7 +28,7 @@ test_that("geom_timeline applies default aesthetics", {
   expect_equal(layer$linewidth, rep(0.5, 11))
   expect_equal(layer$linecolour, rep("black", 11))
   expect_equal(layer$colour, rep("black", 11))
-  expect_equal(layer$size, rep(1.75, 11))
+  expect_equal(layer$size, rep(3, 11))
   expect_equal(layer$alpha, rep(0.25, 11))
   expect_equal(layer$shape, rep(19, 11))
   expect_equal(layer$fill, rep(NA, 11))

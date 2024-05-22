@@ -9,7 +9,7 @@ test_that("GeomTimelineLabel creates expected grobs with default parameters", {
   data <- data.frame(
     x = as.Date('2000-01-01') + 0:10,
     label = letters[1:11],
-    linecolour = "lightgrey",
+    linecolour = "black",
     textcolour = "black",
     linealpha = 0.2,
     textalpha = 1
@@ -37,7 +37,7 @@ test_that("GeomTimelineLabel applies default aesthetics", {
 
    default_aes <- GeomTimelineLabel$default_aes
 
-  expect_equal(default_aes$linecolour, "lightgrey")
+  expect_equal(default_aes$linecolour, "black")
   expect_equal(default_aes$textcolour, "black")
   expect_equal(default_aes$linealpha, 0.2)
   expect_equal(default_aes$textalpha, 1)
@@ -52,7 +52,7 @@ test_that("GeomTimelineLabel handles n_max parameter", {
   data <- data.frame(
     x = as.Date('2000-01-01') + 0:10,
     label = letters[1:11],
-    linecolour = "lightgrey",
+    linecolour = "black",
     textcolour = "black",
     linealpha = 0.2,
     textalpha = 1

@@ -103,7 +103,7 @@ GeomTimelineLabel <- ggplot2::ggproto(
   required_aes = c("x", "label"),
   default_aes = ggplot2::aes(
     limit = NULL,
-    linecolour = "lightgrey",
+    linecolour = "black",
     linealpha = 0.2,
     fontsize = 3,
     textcolour = "black",

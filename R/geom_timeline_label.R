@@ -122,7 +122,6 @@ GeomTimelineLabel <- ggplot2::ggproto(
   ) {
 
     first_row <- data[1, ]
-    print(head(data))
 
     # adjust line length based on point size------------------------------------
     point_size <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size

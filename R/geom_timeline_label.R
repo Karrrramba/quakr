@@ -122,9 +122,9 @@ GeomTimelineLabel <- ggplot2::ggproto(
   ) {
 
     first_row <- data[1, ]
+    print(head(data))
 
-    # adjust line length based on the point size
-
+    # adjust line length based on point size------------------------------------
     point_size <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size
     y_scaler <- ifelse(max(point_size) == min(point_size), 0.15, 0.04 * max(point_size))
 
@@ -134,17 +134,17 @@ GeomTimelineLabel <- ggplot2::ggproto(
 
     data$yend <- data$y + y_scaler
 
+    if (label_dodge ) {
+      data$yend[seq(1, nrow(data), 2)] <- data$y[seq(1, nrow(data), 2)] - y_scaler
+    }
+
+    # n_max --------------------------------------------------------------------
     if(!is.null(n_max) && is.numeric(n_max) && is.null(first_row$limit)) {
       cli::cli_abort("{.arg n_max} must be used in conjunction with {.arg limit}.")
     }
 
     if ((!is.null(n_max) && is.numeric(n_max)) && !is.null(first_row$limit)) {
       data <- data[order(data$limit, decreasing = TRUE), ][1:as.integer(n_max), ]
-    } else
-
-
-    if (label_dodge == TRUE) {
-      data$yend[seq(1, nrow(data), 2)] <- data$y[seq(1, nrow(data), 2)] - y_scaler
     }
 
     coords <- coord$transform(data, panel_params)
@@ -162,7 +162,7 @@ GeomTimelineLabel <- ggplot2::ggproto(
 
     lines_tree <- do.call("grobTree", line_grobs)
 
-    if (label_dodge == TRUE) {
+    if (label_dodge) {
       coords$hjust <- ifelse(coords$yend > coords$y, 0, 1)
       coords$vjust <- ifelse(coords$yend > coords$y, 0, 1)
     } else {
@@ -179,7 +179,7 @@ GeomTimelineLabel <- ggplot2::ggproto(
       vjust = coords$vjust,
       gp = grid::gpar(
         col = ggplot2::alpha(coords$textcolour, coords$textalpha),
-        fontsize = data$fontsize,
+        fontsize = data$size,
         fontfamily = data$family
       ),
       check.overlap = check_overlap

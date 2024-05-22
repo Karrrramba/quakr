@@ -1,16 +1,19 @@
 #' Create Event Labels
 #'
-#' @description
-#' Helper function that creates a new information column composed of:
-#' date (in %Y-%m-%d format), magnitude and total number of casualties.
-#' The resulting information are newline separated to keep the labels
-#' adequately small. The labels do not show missing values. Instead, the respective
-#' information is omitted.
+#' @description Helper function that creates an HMTL-formatted information
+#'     column based on user-specified variables. By default uses 'location',
+#'     'mag' and 'total_deaths' variables.
 #'
-#' @param data A character vector containing the columns "location', 'mag' and
-#' 'total_deaths'.
+#' @param data A data frame.
+#' @param defaults Specifies whether the default variables 'location', 'mag'
+#'     and 'total_deaths' are to be used. Defaults to `TRUE`. If `FALSE` and
+#'     no additional variables are added via `...` the labell will be empty.
+#' @param ... Additional variables to add to the label or instead of defaults.
 #'
 #' @returns A data frame with HTML-formatted label information.
+#'
+#' @importFrom rlang as_label
+#' @importFrom stringr str_to_title
 #'
 #' @examples
 #' library(dplyr)
@@ -27,15 +30,38 @@
 #'   eq_map(annot_col = "popup_text")
 #'
 #' @export
+eq_create_label <- function(data, defaults = TRUE, ...) {
 
-eq_create_label <- function(data) {
+  if (defaults) {
+    variables <- list("location", "mag", "total_deaths", ...)
+  } else {
+    variables <- list(...)
+  }
 
-  l <- paste0(
-      ifelse(!is.na(data$location), paste("<b>Location:</b>", data$location, "<br/>"), ""),
-      ifelse(!is.na(data$mag), paste("<b>Magnitude:</b>", data$mag, "<br/>"), ""),
-      ifelse(!is.na(data$total_deaths), paste("<b>Total deaths:</b>", data$total_deaths), "")
-      )
-  l <- trimws(l)
+  create_label <- function(row) {
+    l <- ""
 
-  l
+    for (i in seq_along(variables)) {
+      var <- rlang::as_label(variables[[i]])
+      var <- gsub('"', "", var)
+
+      var_name <- stringr::str_to_title(var)
+
+      var_value <- row[[var]]
+
+      if (!is.na(var_value)) {
+        l <- paste0(l, "<b>", var_name, ":</b> ", var_value)
+
+        if (i != length(variables)) {
+          l <- paste0(l, "<br/>")
+        }
+      }
+    }
+
+    l <- trimws(l)
+    l
+  }
+
+  labels <- apply(data, 1, create_label)
+  labels
 }

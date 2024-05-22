@@ -4,21 +4,24 @@
 \alias{eq_create_label}
 \title{Create Event Labels}
 \usage{
-eq_create_label(data)
+eq_create_label(data, defaults = TRUE, ...)
 }
 \arguments{
-\item{data}{A character vector containing the columns "location', 'mag' and
-'total_deaths'.}
+\item{data}{A data frame.}
+
+\item{defaults}{Specifies whether the default variables 'location', 'mag'
+and 'total_deaths' are to be used. Defaults to `TRUE`. If `FALSE` and
+no additional variables are added via `...` the labell will be empty.}
+
+\item{...}{Additional variables to add to the label or instead of defaults.}
 }
 \value{
 A data frame with HTML-formatted label information.
 }
 \description{
-Helper function that creates a new information column composed of:
-date (in %Y-%m-%d format), magnitude and total number of casualties.
-The resulting information are newline separated to keep the labels
-adequately small. The labels do not show missing values. Instead, the respective
-information is omitted.
+Helper function that creates an HMTL-formatted information
+    column based on user-specified variables. By default uses 'location',
+    'mag' and 'total_deaths' variables.
 }
 \examples{
 library(dplyr)

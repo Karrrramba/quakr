@@ -180,7 +180,7 @@ chile_data %>%
 
 ```{r}
 chile_data %>% 
-  mutate(label = eq_create_label(., defaults = TRUE, "date", "mag")) %>% 
+  mutate(label = eq_create_label(., defaults = TRUE, "date")) %>% 
   eq_map(annot_col = "label", scaling_factor = 5)
 ```
 

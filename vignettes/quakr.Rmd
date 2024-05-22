@@ -74,7 +74,11 @@ chile_data <- southamerica %>%
 
 # Create a basic timeline plot
 ggplot(chile_data, aes(x = date)) +
-  geom_timeline(aes(xmin = min(date), xmax = max(date))) 
+  geom_timeline(aes(xmin = min(date), xmax = max(date))) +
+  theme_minimal() +
+  labs(x = "Year",
+       size = "Richter Scale Magnitude",
+       col = "Total Deaths")
   
 ```
 
@@ -88,7 +92,7 @@ ggplot(chile_data, aes(x = date)) +
                     size = mag, col = total_deaths)) +
   geom_timeline_label(aes(label = location)) +
   theme_minimal() +
-  labs(x = "Date",
+  labs(x = "Year",
        size = "Richter Scale Magnitude",
        col = "Total Deaths") +
   theme(legend.position = "bottom")
@@ -105,7 +109,7 @@ ggplot(chile_data, aes(x = date)) +
   geom_timeline_label(aes(label = location), 
                       check_overlap = TRUE) +
   theme_minimal() +
-  labs(x = "Date",
+  labs(x = "Year",
        size = "Richter Scale Magnitude",
        col = "Total Deaths") +
   theme(legend.position = "bottom")
@@ -119,7 +123,7 @@ ggplot(chile_data, aes(x = date)) +
                       check_overlap = TRUE,
                       label_dodge = TRUE) +
   theme_minimal() +
-  labs(x = "Date",
+  labs(x = "Year",
        size = "Richter Scale Magnitude",
        col = "Total Deaths") +
   theme(legend.position = "bottom")
@@ -137,7 +141,7 @@ ggplot(chile_data, aes(x = date)) +
                       n_max = 3, 
                       label_dodge = TRUE) +
   theme_minimal() +
-  labs(x = "Date",
+  labs(x = "Year",
        size = "Richter Scale Magnitude",
        col = "Total Deaths") +
   theme(legend.position = "bottom")
@@ -157,10 +161,24 @@ map
 
 ### Adding Labels to Maps
 
-You can add more information to the interactive labels via the `eq_create_label()` function.
+You can add more information to the interactive labels via the `eq_create_label()` function. The default information includes location, magnitude and total deaths.
 
 ```{r}
 chile_data %>% 
-  mutate(label = eq_create_label(.)) %>% 
+  mutate(label = eq_create_label(., defaults = TRUE)) %>% 
+  eq_map(annot_col = "label", scaling_factor = 5)
+```
+
+`Eq_create_label` allows customization by adding variables to the defaults or replacing the defaults entirely.
+
+```{r}
+chile_data %>% 
+  mutate(label = eq_create_label(., defaults = TRUE, "date", "mag")) %>% 
+  eq_map(annot_col = "label", scaling_factor = 5)
+```
+
+```{r}
+chile_data %>% 
+  mutate(label = eq_create_label(., defaults = FALSE, "date", "mag")) %>% 
   eq_map(annot_col = "label", scaling_factor = 5)
 ```

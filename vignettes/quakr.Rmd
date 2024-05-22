@@ -2,7 +2,7 @@
 title: "Introduction to quakr"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{quakr}
+  %\VignetteIndexEntry{Introduction to quakr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,16 +12,16 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(dplyr)
+library(lubridate)
+library(quakr)
+library(ggplot2)
+library(leaflet)
 ```
 
 # Introduction
 
 The quakr package provides tools for analyzing and visualizing earthquake data. This vignette demonstrates the basic functionality of the package, including data loading, cleaning, and visualization.
-
-```{r setup}
-#| echo: false
-library(quakr)
-```
 
 # Loading Data
 
@@ -79,7 +79,6 @@ ggplot(chile_data, aes(x = date)) +
   labs(x = "Year",
        size = "Richter Scale Magnitude",
        col = "Total Deaths")
-  
 ```
 
 ### **Adding Labels to the Timeline**

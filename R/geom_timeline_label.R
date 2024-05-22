@@ -41,7 +41,7 @@
 #'
 #' @importFrom cli cli_abort
 #' @importFrom dplyr filter
-#' @importFrom ggplot2 aes alpha draw_key_text Geom ggplot ggplot_build ggproto last_plot labs layer theme theme_minimal() unit
+#' @importFrom ggplot2 aes alpha draw_key_text Geom ggplot ggplot_build ggproto last_plot labs layer theme theme_minimal unit
 #' @importFrom grid gpar gList grobTree linesGrob textGrob unit
 #' @importFrom lubridate year
 #'
@@ -123,6 +123,17 @@ GeomTimelineLabel <- ggplot2::ggproto(
 
     first_row <- data[1, ]
 
+    # adjust line length based on the point size
+
+    point_size <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size
+    y_scaler <- ifelse(max(point_size) == min(point_size), 0.15, 0.04 * max(point_size))
+
+    if (is.null(first_row$y)) {
+      data$y <- 0.5
+    }
+
+    data$yend <- data$y + y_scaler
+
     if(!is.null(n_max) && is.numeric(n_max) && is.null(first_row$limit)) {
       cli::cli_abort("{.arg n_max} must be used in conjunction with {.arg limit}.")
     }
@@ -131,16 +142,6 @@ GeomTimelineLabel <- ggplot2::ggproto(
       data <- data[order(data$limit, decreasing = TRUE), ][1:as.integer(n_max), ]
     } else
 
-    point_size <- ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size
-    # print(ggplot2::ggplot_build(ggplot2::last_plot())$data)
-    print(ggplot2::ggplot_build(ggplot2::last_plot())$data[[1]]$size)
-    y_scaler <- ifelse(max(point_size) == min(point_size), 0.1, 0.03 * max(point_size))
-
-    if (is.null(first_row$y)) {
-      data$y <- 0.5
-    }
-
-    data$yend <- data$y + y_scaler
 
     if (label_dodge == TRUE) {
       data$yend[seq(1, nrow(data), 2)] <- data$y[seq(1, nrow(data), 2)] - y_scaler

@@ -25,7 +25,7 @@ library(quakr)
 
 # Loading Data
 
-While the package is designed to process raw data from the NCEI database (doi: 10.7289/V5TD9V7K), it also includes two datasets: `world` and `southamerica`. \
+While the package is designed to process raw data from the NCEI database (doi: 10.7289/V5TD9V7K), it also includes two datasets: `world` and `southamerica`.\
 The `world` dataset contains the whole dataset (as of 05/2024), which has been filtered for complete observations for:
 
 -   geographic and geopolitical location (country, state/city/area, longitude and latitude)
@@ -128,7 +128,8 @@ To avoid overcrowding the plot, you can limit the number of labels displayed bas
 
 ```{r}
 ggplot(chile_data, aes(x = date)) +
-  geom_timeline(aes(xmin = min(date), xmax = max(date))) +
+  geom_timeline(aes(xmin = min(date), xmax = max(date),
+                    size = mag, col = total_deaths)) +
   geom_timeline_label(aes(label = mag, limit = mag), n_max = 3) +
   theme_minimal() +
   labs(x = "Date",

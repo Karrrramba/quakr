@@ -102,7 +102,8 @@ Additional to `check_overlap` , which reduces overplotting of labels by blocking
 ggplot(chile_data, aes(x = date)) +
   geom_timeline(aes(xmin = min(date), xmax = max(date), 
                     size = mag, col = total_deaths)) +
-  geom_timeline_label(aes(label = location), check_overlap = TRUE) +
+  geom_timeline_label(aes(label = location), 
+                      check_overlap = TRUE) +
   theme_minimal() +
   labs(x = "Date",
        size = "Richter Scale Magnitude",
@@ -114,7 +115,9 @@ ggplot(chile_data, aes(x = date)) +
 ggplot(chile_data, aes(x = date)) +
   geom_timeline(aes(xmin = min(date), xmax = max(date), 
                     size = mag, col = total_deaths)) +
-  geom_timeline_label(aes(label = location), label_dodge = TRUE) +
+  geom_timeline_label(aes(label = location), 
+                      check_overlap = TRUE,
+                      label_dodge = TRUE) +
   theme_minimal() +
   labs(x = "Date",
        size = "Richter Scale Magnitude",
@@ -130,7 +133,9 @@ To avoid overcrowding the plot, you can limit the number of labels displayed bas
 ggplot(chile_data, aes(x = date)) +
   geom_timeline(aes(xmin = min(date), xmax = max(date),
                     size = mag, col = total_deaths)) +
-  geom_timeline_label(aes(label = mag, limit = mag), n_max = 3) +
+  geom_timeline_label(aes(label = location, limit = mag), 
+                      n_max = 3, 
+                      label_dodge = TRUE) +
   theme_minimal() +
   labs(x = "Date",
        size = "Richter Scale Magnitude",

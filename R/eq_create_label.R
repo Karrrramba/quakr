@@ -1,8 +1,8 @@
 #' Create Event Labels
 #'
 #' @description Helper function that creates an HMTL-formatted information
-#'     column based on user-specified variables. By default uses 'location',
-#'     'mag' and 'total_deaths' variables.
+#'     based on user-specified variables. By default uses 'location','mag' and '
+#'     total_deaths' variables.
 #'
 #' @param data A data frame.
 #' @param defaults Specifies whether the default variables 'location', 'mag'
@@ -45,7 +45,8 @@ eq_create_label <- function(data, defaults = TRUE, ...) {
       var <- rlang::as_label(variables[[i]])
       var <- gsub('"', "", var)
 
-      var_name <- stringr::str_to_title(var)
+      var_name <- gsub("_", " ", var)
+      var_name <- stringr::str_to_title(var_name)
 
       var_value <- row[[var]]
 
@@ -58,8 +59,8 @@ eq_create_label <- function(data, defaults = TRUE, ...) {
       }
     }
 
+    l <- sub("<br/>$", "", l)
     l <- trimws(l)
-    l
   }
 
   labels <- apply(data, 1, create_label)

@@ -28,7 +28,7 @@
 #' @returns A layer \code{ggproto} object.
 #'
 #' @importFrom dplyr filter
-#' @importFrom ggplot2 aes alpha draw_key_point fill_alpha Geom ggplot ggproto labs layer theme theme_minimal()
+#' @importFrom ggplot2 aes alpha draw_key_point fill_alpha Geom ggplot ggproto labs layer theme theme_minimal
 #' @importFrom grid gpar gList pointsGrob segmentsGrob unit
 #' @importFrom lubridate year
 #'

@@ -42,7 +42,7 @@ data("world", package = "quakr")
 head(world)
 ```
 
-The `southamerica` dataset is a reduced version containing only complete earthquake observations in South America. Additionally, it has been reduced to contain only minimal information to demonstrate hwo the package works. Let's load and inspect this dataset.
+The `southamerica` dataset is a reduced version containing only complete earthquake observations in South America. Additionally, it has been reduced to contain only minimal information to demonstrate how the package works. Let's load and inspect this dataset.
 
 data("world", package = "quakr")
 
@@ -54,7 +54,15 @@ head(southamerica)
 
 # Data Cleaning
 
-One of the key functions in **`quakr`** is **`eq_lean_data()`**, which cleans column names and separates country and location information.
+**`quakr`** comes with two data cleaning functions: **`eq_lean_data()`** and **`eq_location_clean`**. While `eq_lean_data()` transforms raw data into a format that can be used with other package functions, `eq_location_clean` only separates country and location information and leaves all other columns in their original state.
+
+```{r}
+data <- data.frame(location_name = c("VENEZUELA: Churuguara, Falcon, Lara; CHILE: Northern", 
+                             "PERU: Amyaraes, Abancay, Casaya, Soraya"),
+           date = as.Date(c(1900-10-29, 1913-11-04)))
+eq_location_clean(data)
+```
+
 
 ```{r}
 cleaned_data <- eq_clean_data(world)

@@ -20,8 +20,8 @@ A data frame with HTML-formatted label information.
 }
 \description{
 Helper function that creates an HMTL-formatted information
-    column based on user-specified variables. By default uses 'location',
-    'mag' and 'total_deaths' variables.
+    based on user-specified variables. By default uses 'location','mag' and '
+    total_deaths' variables.
 }
 \examples{
 library(dplyr)

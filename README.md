@@ -80,7 +80,7 @@ southamerica %>%
 ```
 
 <img src="README_files/figure-commonmark/leaflet_map_1.png"
-data-fig-align="center" width="683" />
+style="width:16.2cm" data-fig-align="center" />
 
 <img src="README_files/figure-commonmark/leaflet_map_2.png"
-data-fig-align="center" />
+style="width:16.2cm" data-fig-align="center" />

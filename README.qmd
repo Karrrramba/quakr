@@ -87,6 +87,6 @@ southamerica %>%
   eq_map(annot_col = "label", scaling_factor = 5)
 ```
 
-![](README_files/figure-commonmark/leaflet_map_1.png){fig-align="center" width="683"}
+![](README_files/figure-commonmark/leaflet_map_1.png){fig-align="center" width="16.2cm"}
 
-![](README_files/figure-commonmark/leaflet_map_2.png){fig-align="center"}
+![](README_files/figure-commonmark/leaflet_map_2.png){fig-align="center" width="16.2cm"}

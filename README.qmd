@@ -78,9 +78,11 @@ southamerica %>%
   theme(legend.position = "bottom")
 ```
 
-```{r}
+```{r leaflet}
+#| eval: false
 # This is only a snapshot of the resulting interactive plot.
-chile_data %>% 
+southamerica %>% 
+  filter(country == "CHILE" & lubridate::year(date) >= 2000) %>%
   mutate(label = eq_create_label(., defaults = FALSE, "date", "mag")) %>% 
   eq_map(annot_col = "label", scaling_factor = 5)
 ```

@@ -4,7 +4,13 @@
 \alias{eq_map}
 \title{Draws a Map with Earthquake Locations}
 \usage{
-eq_map(data, annot_col, scaling_factor = 1)
+eq_map(
+  data,
+  annot_col,
+  scaling_factor = 1,
+  color = "darkred",
+  provider = "Esri.WorldTopoMap"
+)
 }
 \arguments{
 \item{data}{A data frame containing columns for "country",
@@ -14,14 +20,20 @@ eq_map(data, annot_col, scaling_factor = 1)
 
 \item{scaling_factor}{A numeric value which scales the point size.
 Defaults to 1.}
+
+\item{color}{Character value specifying the color of the Earthquake locations.
+Defaults to "darkred".}
+
+\item{provider}{Name of the map provider. See: https://leaflet-extras.github.io/leaflet-providers/preview/) for available options.
+Defaults to "Esri.WorldTopoMap".}
 }
 \value{
 An interactive leaflet map.
 }
 \description{
 \code{eq_map} plots the locations of earthquake events on a geographical map
-  of one or multiple countries. Earthquake locations are plotted as
-  red circles with labels and size scaled based on magnitude.
+    of one or multiple countries. Earthquake locations are plotted as
+    red circles with labels and size scaled based on magnitude.
 }
 \examples{
 library(dplyr)

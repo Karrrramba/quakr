@@ -5,6 +5,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/Karrrramba/quakr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Karrrramba/quakr/actions/workflows/R-CMD-check.yaml)
+[![Build
+Status](https://app.travis-ci.com/Karrrramba/quakr.svg?token=P4KJHzDKdk6ZKokQhvNP&branch=master)](https://app.travis-ci.com/Karrrramba/quakr)
 
 <!-- badges: end -->
 

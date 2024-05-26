@@ -126,7 +126,7 @@ ggplot(chile_data, aes(x = date)) +
 ggplot(chile_data, aes(x = date)) +
   geom_timeline(aes(xmin = min(date), xmax = max(date), 
                     size = mag, col = total_deaths)) +
-  geom_timeline_label(aes(label = location), 
+  geom_timeline_label(aes(label = location),
                       check_overlap = TRUE,
                       label_dodge = TRUE) +
   theme_minimal() +
@@ -162,9 +162,17 @@ The **`quakr`** package also supports creating interactive maps using **`leaflet
 
 ```{r}
 # Adjust point size with the `scaling_factor` parameter
-map <- eq_map(cleaned_data, annot_col = "date", scaling_factor = 5)
-map
+cleaned_data %>% 
+  eq_map(annot_col = "date", scaling_factor = 5)
 ```
+
+You can customize the general visuals of the map and points by setting the `provider` and `color` parameters.
+```{r}
+cleaned_data %>% 
+  eq_map(annot_col = 'date', provider = "Esri.NatGeoWorldMap", color = "blue")
+```
+
+
 
 ### Adding Labels to Maps
 

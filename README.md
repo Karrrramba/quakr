@@ -5,6 +5,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/Karrrramba/quakr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Karrrramba/quakr/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/github/Karrrramba/quakr/graph/badge.svg?token=9MCSQ1V8I3)](https://codecov.io/github/Karrrramba/quakr)
 <!-- badges: end -->
 
 This is my capstone project of the [Mastering Software Development in

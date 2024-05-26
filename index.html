@@ -65,7 +65,6 @@
 </h1></div>
 <hr>
 <!-- badges: start -->
-<!-- badges: end -->
 <p>This is my capstone project of the <a href="https://www.coursera.org/specializations/r" class="external-link">Mastering Software Development in R</a> specialization on Coursera.</p>
 <p>The Earthquake data was obtained from the <a href="https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ngdc.mgg.hazards:G012153" class="external-link">National Centers of Environmental Information</a> (doi: 10.7289/V5TD9V7K).</p>
 <p>The quakr package provides quality of life tools for analysis and visualizations of earthquake data.</p>
@@ -76,18 +75,21 @@
 <p>You can install the development version of quakr by executing the following code:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"Karrrramba/quakr"</span><span class="op">)</span></span></code></pre></div>
-<div class="section level3">
-<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
-</h3>
-<hr>
+<p>After installation, load the package into your R session with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/Karrrramba/quakr" class="external-link">quakr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="co"># Load dataset</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/leaflet/" class="external-link">leaflet</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h3>
+<hr>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load dataset</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"southamerica"</span>, package <span class="op">=</span> <span class="st">"quakr"</span><span class="op">)</span></span></code></pre></div>
 <p>Below you will find examples that illustrate the visualization features. The package’s <a href="https://github.com/Karrrramba/quakr/blob/master/vignettes/quakr.Rmd" class="external-link">vignette</a> shows more customization options for timelines and interactive maps.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">southamerica</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">country</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PERU"</span>, <span class="st">"CHILE"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="fl">2000</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">date</span>, y <span class="op">=</span> <span class="va">country</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -107,7 +109,7 @@
 <span>       col <span class="op">=</span> <span class="st">"Total Deaths"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="README_files/figure-commonmark/timeline-1.png"></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># This is only a snapshot of the resulting interactive plot.</span></span>
 <span><span class="va">southamerica</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">country</span> <span class="op">==</span> <span class="st">"CHILE"</span> <span class="op">&amp;</span> <span class="fu">lubridate</span><span class="fu">::</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">date</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="fl">2000</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -153,7 +155,6 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/Karrrramba/quakr/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/Karrrramba/quakr/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.travis-ci.com/Karrrramba/quakr" class="external-link"><img src="https://app.travis-ci.com/Karrrramba/quakr.svg?token=P4KJHzDKdk6ZKokQhvNP&amp;branch=master" alt="Build Status"></a></li>
 </ul>
 </div>
 

@@ -16,8 +16,6 @@ execute:
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/Karrrramba/quakr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Karrrramba/quakr/actions/workflows/R-CMD-check.yaml)
-[![Build Status](https://app.travis-ci.com/Karrrramba/quakr.svg?token=P4KJHzDKdk6ZKokQhvNP&branch=master)](https://app.travis-ci.com/Karrrramba/quakr)
-
 <!-- badges: end -->
 
 This is my capstone project of the [Mastering Software Development in R](https://www.coursera.org/specializations/r) specialization on Coursera.
@@ -38,20 +36,20 @@ You can install the development version of quakr by executing the following code
 remotes::install_github("Karrrramba/quakr")
 ```
 
-```{r packages, message=FALSE}
-#| echo: false
-#| warning: false
+After installation, load the package into your R session with:
+```{r}
+library(quakr)
+library(ggplot2)
+library(dplyr)
 library(leaflet)
 ```
+
 
 ### Overview
 
 ------------------------------------------------------------------------
 
 ```{r}
-library(quakr)
-library(ggplot2)
-library(dplyr)
 # Load dataset
 data("southamerica", package = "quakr")
 ```

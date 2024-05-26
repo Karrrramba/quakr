@@ -5,9 +5,6 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/Karrrramba/quakr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Karrrramba/quakr/actions/workflows/R-CMD-check.yaml)
-[![Build
-Status](https://app.travis-ci.com/Karrrramba/quakr.svg?token=P4KJHzDKdk6ZKokQhvNP&branch=master)](https://app.travis-ci.com/Karrrramba/quakr)
-
 <!-- badges: end -->
 
 This is my capstone project of the [Mastering Software Development in
@@ -33,14 +30,20 @@ following code:
 remotes::install_github("Karrrramba/quakr")
 ```
 
-### Overview
-
-------------------------------------------------------------------------
+After installation, load the package into your R session with:
 
 ``` r
 library(quakr)
 library(ggplot2)
 library(dplyr)
+library(leaflet)
+```
+
+### Overview
+
+------------------------------------------------------------------------
+
+``` r
 # Load dataset
 data("southamerica", package = "quakr")
 ```
